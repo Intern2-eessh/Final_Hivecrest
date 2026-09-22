@@ -56,7 +56,7 @@ export default function SiteHeader() {
   // Derived, not stored, so a route change never has to write state.
   const activeId = isHome ? trackedId : routeSectionId;
   const [pill, setPill] = useState({ left: 0, width: 0, opacity: 0 });
-  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const linkRefs = useRef<Record<string, HTMLElement | null>>({});
 
   useEffect(() => {
     const fn = () => setIsSticky(window.scrollY >= 24);
