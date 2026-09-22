@@ -149,14 +149,7 @@ export default function SiteHeader() {
           isSticky ? "border-b border-ink-7" : "border-b border-transparent"
         )}
       >
-        {/* The bar itself stays full-bleed — the ground and the hairline run to
-            the window edge — while the row inside it takes the same measure and
-            margin as `.grid-page`. The row used to carry a hand-written
-            `px-6 md:px-12`, which agreed with `--grid-margin` at some widths
-            and not others, and past 1688px drifted away from page content
-            without limit because `.grid-page` caps and centres and a
-            full-bleed row does not. */}
-        <div className="measure-page flex h-full items-center justify-between gap-4">
+        <div className="w-full max-w-[1920px] mx-auto px-4 md:px-8 xl:px-12 flex h-full items-center justify-between gap-4">
         {/* The lockup scales rather than shrinking. `min-w-max` was the first
             attempt and overflowed a 320px viewport; `min-w-0` + `truncate`
             replaced it and overcorrected — a flex item with `min-w-0` may
@@ -173,36 +166,28 @@ export default function SiteHeader() {
             hamburger beside it. */}
         {/* `min-h-11` — the lockup is the home link and its content box was
             25-38px tall depending on the type clamp, short of the 44px floor. */}
-        <Link href="/" className="flex-1 flex items-center gap-2 sm:gap-3 min-h-11 state">
+        <Link href="/" className="flex items-center gap-3 sm:gap-4 min-h-11 state mr-auto">
           <Image
             src="/assets/Hivecrest_Logo.png"
-            alt=""
-            width={96}
-            height={96}
-            className="w-9 sm:w-12 h-auto object-contain shrink-0"
+            alt="Hivecrest Logo"
+            width={128}
+            height={128}
+            className="w-12 sm:w-16 h-auto object-contain shrink-0"
             priority
           />
-          {/* Ceiling lowered 1.75rem → 1.25rem. At 28px with 0.18em tracking
-              the wordmark alone was ~212px and was the single biggest reason
-              the row could not fit; 20px still reads as the primary lockup
-              next to a 12px nav. */}
-          <span className="font-display font-bold text-ink-2 whitespace-nowrap
-                           text-[clamp(1rem,3.2vw,1.25rem)]
-                           tracking-[0.12em] sm:tracking-[0.18em]">
-            HIVECREST
-          </span>
+          <div className="flex flex-col justify-center">
+            <span className="font-display font-bold text-honey-5 whitespace-nowrap
+                             text-[clamp(1rem,2.8vw,1.25rem)]
+                             tracking-[0.12em] sm:tracking-[0.15em] leading-tight">
+              HIVECREST TECHNOLOGY
+            </span>
+            <blockquote className="text-[0.65rem] sm:text-xs font-semibold text-ink-4 tracking-[0.2em] uppercase mt-0.5 border-l-2 border-honey-5/30 pl-2">
+              PRIVATE LIMITED
+            </blockquote>
+          </div>
         </Link>
 
-        {/* `min-[1100px]` rather than `lg`, and the hamburger below moves with
-            it. At 1024 this nav had 19px of slack in the row — measured, not
-            estimated — which is a hair from overflowing before anything is
-            added to it, and the staff entrance to its right needs 44. Held at
-            `lg`, the band from 1024 to 1099 showed the desktop nav (so no
-            hamburger, so no mobile menu) and had no room for the padlock
-            either, leaving an iPad in landscape — exactly 1024 — with no way
-            into the EMS at all. Below 1100 the hamburger now answers, and the
-            menu behind it carries the spelled-out entrance. */}
-        <nav className="relative hidden min-[1100px]:flex space-x-1 t-meta shrink-0 justify-center">
+        <nav className="relative hidden min-[1100px]:flex space-x-2 xl:space-x-6 t-meta shrink-0 items-center h-full">
           {/* Active Navigation Underline (Sliding) */}
           <span
             aria-hidden="true"
@@ -217,26 +202,64 @@ export default function SiteHeader() {
           />
 
           {NAV_ITEMS.map((item) => {
-            const isActive = activeId === item.id;
+            const isActive = activeId === item.id || item.children?.some((c) => activeId === c.id);
+
+            const assignRef = (el: HTMLElement | null) => {
+              if (item.id && el) {
+                linkRefs.current[item.id] = el;
+                item.children?.forEach((c) => {
+                  linkRefs.current[c.id] = el;
+                });
+              }
+            };
+
+            if (item.children) {
+              return (
+                <div key={item.label} className="group relative z-10 flex items-center h-full">
+                  <span
+                    ref={assignRef}
+                    className={cn(
+                      "tap state px-3 py-2 whitespace-nowrap cut-1 cursor-default flex items-center gap-1",
+                      isActive ? "text-honey-5" : "text-ink-4 hover:text-ink-2"
+                    )}
+                  >
+                    {item.label}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 group-hover:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+                  </span>
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 pt-0 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    <div className="bg-paper border border-ink-7 rounded-xl shadow-xl overflow-hidden flex flex-col p-2">
+                      {item.children.map((child) => {
+                        const isChildActive = activeId === child.id;
+                        return (
+                          <a
+                            key={child.label}
+                            href={child.href}
+                            className={cn(
+                              "px-4 py-2.5 text-sm font-medium rounded-lg transition-colors",
+                              isChildActive
+                                ? "text-honey-5 bg-honey-1"
+                                : "text-ink-3 hover:text-honey-5 hover:bg-ivory-2"
+                            )}
+                          >
+                            {child.label}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <a
                 key={item.label}
-                href={item.href}
-                ref={(el) => { linkRefs.current[item.id] = el; }}
+                href={item.href!}
+                ref={assignRef}
                 aria-current={isActive ? "true" : undefined}
-                /* px-4 → px-3. Six items, so this is 48px back into a row
-                   that did not have it to spare.
-                   Hover fills with honey-1 — the same wash the active marker
-                   uses, in the same cut-1 shape, so pointing at an item
-                   previews what selecting it looks like. It cannot be confused
-                   with the active item, which also carries honey-5 text; hover
-                   goes to ink-2. `ink-4 -> ink-2` alone was a change between
-                   two greys that most people never saw. */
                 className={cn(
-                  "tap state relative z-10 px-3 whitespace-nowrap cut-1",
-                  isActive
-                    ? "text-honey-5"
-                    : "text-ink-4 hover:text-ink-2"
+                  "tap state relative z-10 px-3 py-2 whitespace-nowrap cut-1 flex items-center h-full",
+                  isActive ? "text-honey-5" : "text-ink-4 hover:text-ink-2"
                 )}
               >
                 {item.label}
@@ -274,7 +297,7 @@ export default function SiteHeader() {
             the hit area back to 44 x 44 without spending 44px of the row, so
             the touch target the bible asks for survives at a width where the
             visible square could not. */}
-        <div className="hidden min-[1100px]:flex flex-1 justify-end items-center gap-3">
+        <div className="hidden min-[1100px]:flex justify-end items-center gap-3 ml-6 xl:ml-10">
           {/* Animated cloud Employee Login button — cloud icon slides right on
               hover, label fades. Variant `cloud` keeps all dialog logic inside
               EmployeeLogin while the button renders with Tailwind inline JSX. */}
@@ -322,19 +345,41 @@ export default function SiteHeader() {
         inert={!isMobileMenuOpen}
       >
         <div className="my-auto flex flex-col space-y-6 text-center">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={cn(
-                "tap t-h4 state justify-center",
-                activeId === item.id ? "text-honey-5" : "text-ink-3 hover:text-honey-5"
-              )}
-            >
-              {item.label}
-            </a>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            if (item.children) {
+              return (
+                <div key={item.label} className="flex flex-col space-y-4">
+                  <span className="t-h4 text-ink-4 uppercase tracking-widest">{item.label}</span>
+                  {item.children.map((child) => (
+                    <a
+                      key={child.label}
+                      href={child.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={cn(
+                        "tap t-h4 state justify-center",
+                        activeId === child.id ? "text-honey-5" : "text-ink-3 hover:text-honey-5"
+                      )}
+                    >
+                      {child.label}
+                    </a>
+                  ))}
+                </div>
+              );
+            }
+            return (
+              <a
+                key={item.label}
+                href={item.href!}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={cn(
+                  "tap t-h4 state justify-center",
+                  activeId === item.id ? "text-honey-5" : "text-ink-3 hover:text-honey-5"
+                )}
+              >
+                {item.label}
+              </a>
+            );
+          })}
           {/* The desktop CTA is `hidden xl:flex`, so on every phone and every
               laptop under 1440px the only route out of this menu was a
               `mailto:`. "Start a project" is the actual conversion path and it

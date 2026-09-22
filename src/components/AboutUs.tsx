@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { prefersReducedMotion, scrubbed, wipeFrom, wipeTo } from "@/lib/motion";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /**
  * Rebuilt from `travel_vlog_video.mp4` (kept in `media-source/`), which had
@@ -49,78 +50,29 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export default function AboutUs() {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
-  const [videoSrc, setVideoSrc] = useState<string | null>(null);
-
-  /**
-   * The source is attached only once the frame is near the viewport, and only
-   * after `load` — never during the initial page load.
-   *
-   * A `<video autoplay>` with a source in the markup holds the document's
-   * delay-the-load-event flag until it has buffered a frame, and GSAP
-   * registers `_refreshAll` on `window.load` passing the event as its `force`
-   * argument — so the refresh is not deferred while a scroll is in flight. It
-   * records the scroll position, hard-sets the scroller to 0, and restores the
-   * recorded value. Firing that during the 1.1s smooth scroll from "Explore
-   * Solutions" left the page parked at whatever it had reached, usually this
-   * section. That was the whole "the button goes to the wrong section" bug:
-   * the anchor was always correct, the scroll was being reset underneath it.
-   *
-   * The file is 4.57MB now rather than 12.08MB, which shortens the window but
-   * does not close it — a slow connection can still hold `load` open past the
-   * start of a scroll. This stays.
-   */
-  useEffect(() => {
-    const el = mediaRef.current;
-    if (!el) return;
-
-    let observer: IntersectionObserver | null = null;
-
-    const arm = () => {
-      // `rootMargin` gives the file a head start so it is usually ready by the
-      // time the frame is actually on screen.
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((entry) => entry.isIntersecting)) {
-            setVideoSrc(VIDEO_SRC);
-            observer?.disconnect();
-            observer = null;
-          }
-        },
-        { rootMargin: "600px 0px" }
-      );
-      observer.observe(el);
-    };
-
-    if (document.readyState === "complete") {
-      arm();
-      return () => observer?.disconnect();
-    }
-
-    window.addEventListener("load", arm, { once: true });
-    return () => {
-      window.removeEventListener("load", arm);
-      observer?.disconnect();
-    };
-  }, []);
-
-  // Autoplay can be blocked until user interaction — a muted loop retries on
-  // its own, so a rejection here is not an error worth surfacing.
-  useEffect(() => {
-    if (!videoSrc || !videoRef.current) return;
-    videoRef.current.play().catch(() => {});
-  }, [videoSrc]);
 
   useEffect(() => {
-    if (prefersReducedMotion()) return;   // Rule 07.7 — render the settled frame
+    if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(mediaRef.current, wipeFrom("left"), {
-        ...wipeTo,
-        ease: "none",   // scrubbed sequences use --ease-drive (Rule 07.0)
-        scrollTrigger: scrubbed({ trigger: sectionRef.current }),
-      });
+      // Smooth arrival transition when scrolled into view
+      gsap.fromTo(
+        mediaRef.current,
+        { opacity: 0, y: 60, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%", // Triggers when the top of the section reaches 75% down the viewport
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
     }, sectionRef);
     return () => ctx.revert();
   }, []);
@@ -131,7 +83,7 @@ export default function AboutUs() {
       ref={sectionRef}
       className="relative w-full bg-ivory-2 rhythm-1 text-ink-2"
     >
-      <div className="grid-page items-start gap-y-10">
+      <div className="grid-page items-stretch gap-y-10">
 
         {/* Copy takes the anchor seat, cols 1–7. The `md:col-span-6` that used
             to sit alongside it never applied — `.seat-anchor` is unlayered and
@@ -194,21 +146,13 @@ export default function AboutUs() {
             rasterise plus a 28px blur, thirty times a second, for a shadow.
             The frame is a `Paper` surface with a cut corner, which is enough
             to separate it from the ground on its own. */}
-        <div ref={mediaRef} className="seat-counter">
-          <div className="m-paper cut-4 overflow-hidden w-full aspect-[16/10] bg-ink-8">
-            {/* No `poster`: a still would have to be a second asset kept in
-                sync with the clip by hand. The frame is an `Inset` ground until
-                the source arrives, which it does 600px before the frame is on
-                screen, so in practice the gap is not seen. */}
-            <video
-              ref={videoRef}
-              src={videoSrc ?? undefined}
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="none"
-              className="w-full h-full object-cover object-center"
+        <div ref={mediaRef} className="seat-counter flex items-center justify-center">
+          <div className="w-full h-full min-h-[350px] relative mix-blend-multiply flex-1">
+            <Image
+              src="/assets/hivecrestloogo.png"
+              alt="Hivecrest Logo"
+              fill
+              className="object-contain contrast-125 brightness-110 scale-[1.35]"
             />
           </div>
         </div>

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { DM_Sans, Space_Grotesk } from "next/font/google";
+import { DM_Sans, Space_Grotesk, Asul } from "next/font/google";
 import "./globals.css";
 import Understructure from "@/components/Understructure";
+import SplashScreen from "@/components/SplashScreen";
 import {
   SITE_DESCRIPTION,
   SITE_EYEBROW,
@@ -22,7 +23,7 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",   // replaces --font-inter so t-body / t-caption are DM Sans
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
 });
 
 const grotesk = Space_Grotesk({
@@ -30,6 +31,13 @@ const grotesk = Space_Grotesk({
   display: "swap",
   variable: "--font-grotesk",
   weight: ["400", "500", "600", "700"],
+});
+
+const asul = Asul({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-asul",
+  weight: ["400", "700"],
 });
 
 const SHARE_TITLE = `${SITE_NAME} | ${SITE_EYEBROW}`;
@@ -72,9 +80,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${grotesk.variable} text-ink-2 antialiased`}
+      className={`${dmSans.variable} ${grotesk.variable} ${asul.variable} text-ink-2 antialiased`}
     >
       <body className={dmSans.className}>
+        <SplashScreen />
         {/* This site has never shipped a service worker, but the dev server log
             shows `GET /sw.js 404` — which a browser only ever asks for when one
             is already registered for the origin. Something served earlier on

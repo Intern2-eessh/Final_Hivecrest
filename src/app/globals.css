@@ -56,14 +56,14 @@
      Rule 02.4: text colour is a token, never an opacity. `text-ink-3`,
      never `text-charcoal/65`.
      Rule 02.5: exactly three text tiers — ink-2, ink-3, ink-4. */
-  --color-ink-1: #14110F;   /* `Ink` material ground. Once sitewide (06.3) */
-  --color-ink-2: #1C1917;   /* primary text · primary button ground · 2px structural edge */
-  --color-ink-3: #443E39;   /* secondary text · long-form body */
-  --color-ink-4: #6B625A;   /* tertiary text · labels · captions. THE TEXT FLOOR */
-  --color-ink-5: #9A9088;   /* never text. disabled foreground · large numerals */
-  --color-ink-6: #C8C0B5;   /* group-boundary hairline · hex bullet · understructure stroke */
-  --color-ink-7: #E3DCD1;   /* in-group hairline */
-  --color-ink-8: #F0EADF;   /* `Inset` material ground */
+  --color-ink-1: #09090B;   /* `Ink` material ground. Once sitewide (06.3) */
+  --color-ink-2: #18181B;   /* primary text · primary button ground · 2px structural edge */
+  --color-ink-3: #27272A;   /* secondary text · long-form body */
+  --color-ink-4: #3F3F46;   /* tertiary text · labels · captions. THE TEXT FLOOR */
+  --color-ink-5: #71717A;   /* never text. disabled foreground · large numerals */
+  --color-ink-6: #A1A1AA;   /* group-boundary hairline · hex bullet · understructure stroke */
+  --color-ink-7: #D4D4D8;   /* in-group hairline */
+  --color-ink-8: #E4E4E7;   /* `Inset` material ground */
 
   /* ── Honey · marking ───────────────────────────────────────────────────
      Rule 02.8: gold is a fill, not an ink.
@@ -72,12 +72,12 @@
      on a screen · the active nav state · the focus ring · the hex bullet ·
      a narrative resolution moment. Eyebrows, tags, index numbers and icon
      tiles are demoted to ink. */
-  --color-honey-1: #FBF3D9;   /* mark background / wash */
-  --color-honey-2: #F5C242;   /* dark grounds only · focus ring on `Ink` */
-  --color-honey-3: #D4AF37;   /* brand gold. fills and marks. never text on light */
-  --color-honey-4: #A87C10;   /* text ≥24px and icons only (3.62, large-text AA) */
-  --color-honey-5: #8A6100;   /* the only honey permitted for body text (5.31 AA) */
-  --color-honey-6: #5E4200;   /* text on honey-1 where AAA is required (8.93) */
+  --color-honey-1: #FAF4E5;   /* mark background / wash */
+  --color-honey-2: #EDCD7A;   /* dark grounds only · focus ring on `Ink` */
+  --color-honey-3: #D4A32A;   /* brand gold (PDF Match). fills and marks. never text on light */
+  --color-honey-4: #B08200;   /* text ≥24px and icons only */
+  --color-honey-5: #8F6900;   /* the only honey permitted for body text */
+  --color-honey-6: #664A00;   /* text on honey-1 where AAA is required */
 
   /* ── Slate · the unresolved ────────────────────────────────────────────
      The one cold accent, so warmth has something to be warm against.

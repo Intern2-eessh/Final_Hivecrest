@@ -129,14 +129,14 @@ export default function SolutionsSection() {
           line up with the opener above instead of sitting on a second,
           slightly different measure. */}
       <div className="grid-page">
-      <div className="seat-full flex flex-col">
+      <div className="seat-full flex flex-col gap-12 md:gap-24 pb-16">
         {SERVICES.map((project, index) => {
           const isEven = index % 2 === 0;
 
           return (
             <div
               key={project.id}
-              className="project-row group flex flex-col md:flex-row items-center gap-8 md:gap-16 py-6 md:py-10 border-t border-ink-7 first:border-t-0"
+              className="project-row group flex flex-col md:flex-row items-center gap-8 md:gap-16 p-8 md:p-12 lg:p-16 rounded-[2.5rem] bg-ivory-3 shadow-[12px_12px_32px_#cfcbbb,-12px_-12px_32px_#ffffff]"
               data-reversed={(!isEven).toString()}
             >
               {/* Image column.
@@ -152,20 +152,15 @@ export default function SolutionsSection() {
               <div
                 className={`depth-stage w-full md:w-1/2 ${isEven ? "md:order-1" : "md:order-2"}`}
               >
-                <div className="project-image-wrapper relative w-full aspect-[16/10] cut-3 overflow-hidden">
-                  <Image
-                    src={project.image}
-                    alt={`${project.title} by Hivecrest`}
-                    fill
-                    /* No `sizes`. `next.config.ts` sets `images.unoptimized`,
-                       and that branch of next/image returns `srcSet: undefined,
-                       sizes: undefined` — the attribute never reached the DOM,
-                       so it read as a responsive-image strategy the build had
-                       already discarded. */
-                    /* Rule 07.3 — `scale` on hover is banned outright, so the
-                       image never zooms. */
-                    className="object-cover object-center"
-                  />
+                <div className="project-image-wrapper relative w-full aspect-[16/10] rounded-[2rem] p-3 md:p-4 bg-ivory-3 shadow-[8px_8px_20px_#cfcbbb,-8px_-8px_20px_#ffffff]">
+                  <div className="relative w-full h-full rounded-[1.25rem] overflow-hidden">
+                    <Image
+                      src={project.image}
+                      alt={`${project.title} by Hivecrest`}
+                      fill
+                      className="object-cover object-center"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -176,11 +171,10 @@ export default function SolutionsSection() {
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  {/* Rule 02.7 / D-008 — index numbers are ink, not honey. */}
-                  <span className="index-numeral t-h4 shrink-0">
+                  <span className="index-numeral t-h4 shrink-0 px-4 py-2 rounded-xl bg-ivory-3 shadow-[inset_4px_4px_8px_#cfcbbb,inset_-4px_-4px_8px_#ffffff] text-honey-5 font-bold">
                     {project.id}
                   </span>
-                  <h3 className="t-h3 text-ink-2">
+                  <h3 className="t-h3 text-ink-2" style={{ textShadow: "1.5px 1.5px 2px #ffffff, -1.5px -1.5px 2px rgba(0,0,0,0.15)" }}>
                     {project.title}
                   </h3>
                 </div>
@@ -189,11 +183,11 @@ export default function SolutionsSection() {
                   {project.tagline}
                 </p>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-3 pt-2">
                   {project.chips.map((chip) => (
                     <span
                       key={chip}
-                      className="tag cut-1"
+                      className="px-4 py-2 rounded-full text-xs font-semibold text-ink-3 bg-ivory-3 shadow-[4px_4px_10px_#cfcbbb,-4px_-4px_10px_#ffffff]"
                     >
                       {chip}
                     </span>
@@ -206,10 +200,10 @@ export default function SolutionsSection() {
 
                 <Link
                   href={servicePath(project.slug)}
-                  className="tap state group/btn gap-3 t-body-s font-semibold text-ink-2 mt-1 w-fit hover:text-honey-5"
+                  className="tap state group/btn flex items-center justify-between gap-4 t-body-s font-semibold text-ink-2 mt-4 px-8 py-4 rounded-full bg-ivory-3 shadow-[6px_6px_16px_#cfcbbb,-6px_-6px_16px_#ffffff] hover:shadow-[4px_4px_8px_#cfcbbb,-4px_-4px_8px_#ffffff] active:shadow-[inset_4px_4px_8px_#cfcbbb,inset_-4px_-4px_8px_#ffffff] transition-all duration-300 w-fit"
                 >
                   <span>Explore {project.title}</span>
-                  <span className="state p-2 cut-1 border border-ink-6 bg-paper group-hover/btn:bg-ink-8">
+                  <span className="p-2 rounded-full bg-ivory-3 shadow-[inset_3px_3px_6px_#cfcbbb,inset_-3px_-3px_6px_#ffffff] text-honey-5 group-hover/btn:text-honey-4 transition-colors">
                     <ArrowUpRight className="w-4 h-4" />
                   </span>
                 </Link>

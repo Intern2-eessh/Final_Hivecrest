@@ -109,29 +109,29 @@ export default function OurAchievements() {
           the only claims on this page that a third party has already checked.
         </p>
 
+        {/* Ambient blurred orbs to make the Glassmorphism visible against the solid background */}
+        <div className="absolute top-1/2 left-0 md:left-1/4 w-96 h-96 bg-honey-2/40 rounded-full mix-blend-multiply filter blur-[100px] pointer-events-none -translate-y-1/2" />
+        <div className="absolute top-1/2 right-0 md:right-1/4 w-[30rem] h-[30rem] bg-slate-2/40 rounded-full mix-blend-multiply filter blur-[120px] pointer-events-none -translate-y-1/2" />
+
         {/* Three credentials: two-up at md, three-up from lg so the row stays
             one line on desktop and the cards keep a readable width on tablet. */}
-        <div className="seat-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-12">
+        <div className="seat-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-12 relative z-10">
           {achievements.map((item) => (
             <div
               key={item.index}
-              /* `card-rule`, not the Vision cards' `card-edge`: a 2px structural
-                 edge draws down the left and the numeral promotes to ink. No
-                 ground change — a credential is a fact, not an invitation, and
-                 it should not behave like something you can click. */
-              className="m-line card-rule relative cut-3 p-8 md:p-10 flex flex-col items-start h-full"
+              className="relative rounded-[2rem] p-8 md:p-10 flex flex-col items-start h-full bg-white/40 backdrop-blur-xl border border-white/70 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:bg-white/50 hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-all duration-300"
             >
               {/* Rule 02.7 / D-008 — index numbers mark position, not
                   importance, so they are ink. Rule 03.2 — numerals are set in
                   the display face with tabular figures. */}
-              <span className="index-numeral absolute top-6 right-6 t-h4">
+              <span className="index-numeral absolute top-6 right-8 t-h4 text-ink-5/50 font-bold">
                 {item.index}
               </span>
 
               {/* Declared at each source's own aspect (see `logoW`/`logoH`
                   above) so the reserved box matches what decodes — a square
                   declaration under StartupTN's wide lockup reflowed on load. */}
-              <div className="h-24 md:h-28 mb-8 flex items-center">
+              <div className="h-24 md:h-28 mb-8 flex items-center relative z-10">
                 <Image
                   src={item.logo}
                   alt={item.title}
@@ -141,7 +141,9 @@ export default function OurAchievements() {
                 />
               </div>
 
-              <span className="t-meta text-ink-4 mb-3">{item.meta}</span>
+              <span className="w-fit px-4 py-1.5 mb-4 rounded-full bg-white/60 backdrop-blur-md text-xs font-bold text-ink-3 shadow-sm border border-white/80">
+                {item.meta}
+              </span>
               <h3 className="t-h4 text-ink-2 mb-3">{item.title}</h3>
               <p className="t-body-s text-ink-3 measure-body">
                 {item.desc}

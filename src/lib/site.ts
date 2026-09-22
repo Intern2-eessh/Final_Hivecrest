@@ -99,12 +99,18 @@ export const SITE_CREDENTIALS =
  * If a section is reordered there, reorder it here too.
  */
 export const NAV_ITEMS = [
-  { label: "ABOUT US", id: "about", href: "/#about" },
-  { label: "VISION & MISSION", id: "vision", href: "/#vision" },
-  { label: "NOTABLES", id: "achievements", href: "/#achievements" },
+  {
+    label: "COMPANY",
+    id: "company",
+    children: [
+      { label: "ABOUT US", id: "about", href: "/#about" },
+      { label: "VISION & MISSION", id: "vision", href: "/#vision" },
+      { label: "NOTABLES", id: "achievements", href: "/#achievements" },
+      { label: "FOUNDER'S DESK", id: "founders", href: "/#founders" },
+    ],
+  },
   { label: "SOLUTION", id: "solution", href: "/#solution" },
-  { label: "PORTFOLIO", id: "portfolio", href: "/#portfolio" },
-  { label: "FOUNDER'S DESK", id: "founders", href: "/#founders" },
+  { label: "OUR PARTNERS", id: "portfolio", href: "/#portfolio" },
   /* `/#contact`, not `/contact`. Every other item in this nav scrolls to a
      section and the scrollspy highlights it on the way past; this one alone
      navigated away to a standalone page, so the highlight it had just earned

@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
+import GatewayFlow from "@/components/ui/gateway-flow";
 import { START_PROJECT_HREF } from "@/lib/site";
 import { deepLinkHash } from "@/lib/navigation";
 import {
@@ -94,15 +95,31 @@ export default function PremiumHero() {
           rotateX: (i: number) => (i % 2 === 0 ? 46 : -46),
           z: -260,
           opacity: 0,
-          duration: DURATION.monument * 0.625,
-          stagger: 0.11,
+          duration: 1.8, // Significantly slowed down duration
+          stagger: 0.25, // Noticeable stagger for jumping effect
           ease: EASE.settle,
         })
         .from(
           ".hero-brand-wrap",
-          { scale: 1.18, duration: DURATION.monument * 0.875, ease: EASE.settle },
+          { scale: 1.18, duration: 2.8, ease: EASE.settle }, // Slower zoom settle
           0
         );
+
+      // Parallax Scrolling Effect (triggers as you scroll down)
+      const scrollTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "bottom top", // From top of screen until it leaves the screen
+          scrub: true,
+        },
+      });
+
+      scrollTl
+        .to(".hero-bg-mesh", { yPercent: 50, ease: "none" }, 0)
+        .to(".hero-brand-wrap", { yPercent: 25, ease: "none" }, 0)
+        .to(".hero-content-wrapper", { yPercent: 10, opacity: 0, ease: "none" }, 0);
+
     }, heroRef);
     return () => ctx.revert();
   }, []);
@@ -113,7 +130,33 @@ export default function PremiumHero() {
       {/* Archetype A — MONUMENT (§13.2). The one section in the site that is
           allowed to centre, spending 1 of the 2 centering tokens (04.3).
           Ground `ivory-2`: the page warms from here down and never cools. */}
-      <div ref={heroRef} className="relative w-full overflow-hidden flex flex-col bg-ivory-2">
+      <div ref={heroRef} className="relative w-full min-h-[90vh] overflow-hidden flex flex-col bg-ivory-2">
+        {/* Animated Background Mesh/Glow */}
+        <div className="hero-bg-mesh absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <GatewayFlow mode="light" density={1.5} size={1.5} speed={0.8} className="absolute inset-0 w-full h-full object-cover" />
+          <div className="absolute top-[-50%] left-[-20%] w-[140%] h-[140%] opacity-40 animate-slow-pan bg-[radial-gradient(circle_at_center,rgba(212,163,42,0.15)_0%,transparent_60%)]" />
+          <div className="absolute bottom-[-50%] right-[-20%] w-[140%] h-[140%] opacity-30 animate-slow-pan-reverse bg-[radial-gradient(circle_at_center,rgba(212,163,42,0.12)_0%,transparent_60%)]" />
+        </div>
+        <style>{`
+          @keyframes slow-pan {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(5%, 10%) scale(1.1); }
+            66% { transform: translate(-5%, 5%) scale(0.95); }
+            100% { transform: translate(0, 0) scale(1); }
+          }
+          @keyframes slow-pan-reverse {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-10%, -5%) scale(1.05); }
+            66% { transform: translate(5%, -10%) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+          }
+          .animate-slow-pan {
+            animation: slow-pan 20s ease-in-out infinite;
+          }
+          .animate-slow-pan-reverse {
+            animation: slow-pan-reverse 25s ease-in-out infinite;
+          }
+        `}</style>
 
         {/* Rule 05.9 — the hexagonal grid is a structure, never a texture. The
             5%-opacity halo that used to sit here was wallpaper; the comb now
@@ -125,7 +168,7 @@ export default function PremiumHero() {
         {/* `measure-page` rather than `px-6 md:px-12`: the same measure and
             margin as `.grid-page`, so the hero stops centring in the full
             viewport while every section below it centres in a 1688px box. */}
-        <div className="measure-page relative z-10 flex flex-col items-center pt-36 md:pt-44 pb-8 md:pb-10">
+        <div className="hero-content-wrapper measure-page relative z-10 flex flex-col items-center pt-36 md:pt-44 pb-8 md:pb-10">
 
           {/* Rule 03.8 — labels are not chips: a hairline and bare text.
               Rule 02.7 — an eyebrow is not on the honey list, so it is ink. */}
@@ -160,9 +203,10 @@ export default function PremiumHero() {
                 DIRECT children, and the letters are children of this h1. */}
             <h1
               aria-label="HIVECREST"
-              className="hero-stage font-display font-bold text-center select-none text-honey-4 m-0 flex justify-center overflow-hidden py-3
+              className="hero-stage font-bold text-center select-none text-honey-4 m-0 flex justify-center
                          leading-[0.95] tracking-[0.06em]
                          text-[clamp(2.25rem,11vw,8rem)]"
+              style={{ fontFamily: "var(--font-asul), serif" }}
             >
               {"HIVECREST".split("").map((ch, i) => (
                 <span key={i} aria-hidden="true" className="brand-letter inline-block">
@@ -188,15 +232,6 @@ export default function PremiumHero() {
 
           {/* CTAs */}
           <div className="hero-rise flex flex-col sm:flex-row items-center gap-4 mt-10">
-            <a
-              href="#solution"
-              className="btn btn-primary state cut-2"
-            >
-              Explore Solutions
-              {/* Rule 08.6 — no `group-hover:translate-x-1`. Hover changes
-                  value, not position; moving the arrow moves the target. */}
-              <ArrowRight className="w-4 h-4" />
-            </a>
             {/* This pointed at `mailto:` — the most prominent conversion button
                 on the site dropped the visitor into whatever mail client the
                 machine has configured, or nothing at all on a device with none.

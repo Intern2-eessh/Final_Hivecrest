@@ -305,16 +305,16 @@ export default function ContactSection({
 
           {/* ── Right: the form ── */}
           <div ref={panelRef} className="relative mt-8 lg:mt-0">
-            {/* Glassmorphism backing card */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl rounded-[2.5rem] border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] transform rotate-1 scale-[1.02] transition-transform hover:rotate-0"></div>
+            {/* Mild Honey Glassmorphism backing card */}
+            <div className="absolute inset-0 bg-gradient-to-br from-honey-2/70 to-honey-1/40 backdrop-blur-3xl rounded-[3rem] border-2 border-white/80 shadow-[0_30px_60px_rgba(255,180,0,0.08)] transform rotate-1 scale-[1.02] transition-transform hover:rotate-0"></div>
             
-            <div className="relative bg-[#111]/80 backdrop-blur-xl rounded-[2rem] p-8 md:p-12 border border-white/5 shadow-2xl z-10">
+            <div className="relative bg-honey-1/70 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 border-4 border-white/90 shadow-[0_20px_50px_rgba(212,163,42,0.1)] z-10">
             <form ref={formRef} onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label htmlFor="cf-name" className="block t-caption font-semibold text-paper/80 mb-2">
-                    Your name <span className="text-honey-5">*</span>
+                  <label htmlFor="cf-name" className="block t-caption font-semibold text-ink-3 mb-2">
+                    Your name <span className="text-honey-6">*</span>
                   </label>
                   <input
                     id="cf-name"
@@ -327,7 +327,7 @@ export default function ContactSection({
                     aria-invalid={!!errors.name}
                     aria-describedby={errors.name ? "cf-name-err" : undefined}
                     disabled={status === "sending" || status === "sent"}
-                    className={`field cut-2 state bg-white/5 text-paper border-white/10 placeholder-white/30 focus:border-honey-5 focus:ring-1 focus:ring-honey-5/50 ${
+                    className={`field rounded-2xl state bg-white/60 text-ink-2 border-2 border-white/80 placeholder-ink-4/50 focus:bg-white/90 focus:border-honey-5 focus:ring-1 focus:ring-honey-5/50 ${
                       errors.name ? "border-danger" : ""
                     }`}
                   />
@@ -339,8 +339,8 @@ export default function ContactSection({
                 </div>
 
                 <div>
-                  <label htmlFor="cf-email" className="block t-caption font-semibold text-paper/80 mb-2">
-                    Email address <span className="text-honey-5">*</span>
+                  <label htmlFor="cf-email" className="block t-caption font-semibold text-ink-3 mb-2">
+                    Email address <span className="text-honey-6">*</span>
                   </label>
                   <input
                     id="cf-email"
@@ -353,7 +353,7 @@ export default function ContactSection({
                     aria-invalid={!!errors.email}
                     aria-describedby={errors.email ? "cf-email-err" : undefined}
                     disabled={status === "sending" || status === "sent"}
-                    className={`field cut-2 state bg-white/5 text-paper border-white/10 placeholder-white/30 focus:border-honey-5 focus:ring-1 focus:ring-honey-5/50 ${
+                    className={`field rounded-2xl state bg-white/60 text-ink-2 border-2 border-white/80 placeholder-ink-4/50 focus:bg-white/90 focus:border-honey-5 focus:ring-1 focus:ring-honey-5/50 ${
                       errors.email ? "border-danger" : ""
                     }`}
                   />
@@ -367,8 +367,8 @@ export default function ContactSection({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label htmlFor="cf-company" className="block t-caption font-semibold text-paper/80 mb-2">
-                    Company <span className="text-paper/40 font-normal">(optional)</span>
+                  <label htmlFor="cf-company" className="block t-caption font-semibold text-ink-3 mb-2">
+                    Company <span className="text-ink-4 font-normal">(optional)</span>
                   </label>
                   <input
                     id="cf-company"
@@ -378,12 +378,12 @@ export default function ContactSection({
                     onChange={set("company")}
                     autoComplete="organization"
                     placeholder="Hivecrest Technologies"
-                    className={`field cut-2 state bg-white/5 text-paper border-white/10 placeholder-white/30 focus:border-honey-5 focus:ring-1 focus:ring-honey-5/50`}
+                    className={`field rounded-2xl state bg-white/60 text-ink-2 border-2 border-white/80 placeholder-ink-4/50 focus:bg-white/90 focus:border-honey-5 focus:ring-1 focus:ring-honey-5/50`}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="cf-service" className="block t-caption font-semibold text-paper/80 mb-2">
+                  <label htmlFor="cf-service" className="block t-caption font-semibold text-ink-3 mb-2">
                     What do you need?
                   </label>
                   <select
@@ -391,7 +391,7 @@ export default function ContactSection({
                     name="service"
                     value={fields.service}
                     onChange={set("service")}
-                    className={`field cut-2 state bg-white/5 text-paper border-white/10 focus:border-honey-5 focus:ring-1 focus:ring-honey-5/50 cursor-pointer appearance-none [&>option]:bg-ink-1 [&>option]:text-paper`}
+                    className={`field rounded-2xl state bg-white/60 text-ink-2 border-2 border-white/80 focus:bg-white/90 focus:border-honey-5 focus:ring-1 focus:ring-honey-5/50 cursor-pointer appearance-none [&>option]:bg-white [&>option]:text-ink-2`}
                   >
                     {SERVICE_OPTIONS.map((s) => (
                       <option key={s} value={s}>{s}</option>
@@ -401,8 +401,8 @@ export default function ContactSection({
               </div>
 
               <div>
-                <label htmlFor="cf-message" className="block t-caption font-semibold text-paper/80 mb-2">
-                  What are you trying to fix? <span className="text-honey-5">*</span>
+                <label htmlFor="cf-message" className="block t-caption font-semibold text-ink-3 mb-2">
+                  What are you trying to fix? <span className="text-honey-6">*</span>
                 </label>
                 <textarea
                   id="cf-message"
@@ -413,7 +413,7 @@ export default function ContactSection({
                   placeholder="Right now our team tracks orders in three spreadsheets and follows up on WhatsApp."
                   aria-invalid={!!errors.message}
                   aria-describedby={errors.message ? "cf-message-err" : undefined}
-                  className={`field cut-2 state bg-white/5 text-paper border-white/10 placeholder-white/30 focus:border-honey-5 focus:ring-1 focus:ring-honey-5/50 resize-y min-h-[120px] ${
+                  className={`field rounded-2xl state bg-white/60 text-ink-2 border-2 border-white/80 placeholder-ink-4/50 focus:bg-white/90 focus:border-honey-5 focus:ring-1 focus:ring-honey-5/50 resize-y min-h-[120px] ${
                     errors.message ? "border-danger" : ""
                   }`}
                 />
@@ -454,7 +454,7 @@ export default function ContactSection({
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="btn btn-primary state cut-2 w-full sm:w-fit disabled:cursor-wait px-8 shadow-[0_0_20px_rgba(255,180,0,0.3)] hover:shadow-[0_0_30px_rgba(255,180,0,0.6)] hover:-translate-y-1 transition-all duration-300"
+                className="btn btn-primary state rounded-full w-full sm:w-fit disabled:cursor-wait px-8 py-3 shadow-[0_0_20px_rgba(255,180,0,0.3)] hover:shadow-[0_0_30px_rgba(255,180,0,0.6)] hover:-translate-y-1 transition-all duration-300 font-bold"
               >
                 {status === "sending" ? (
                   <>
