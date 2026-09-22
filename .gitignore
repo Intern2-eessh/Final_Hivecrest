@@ -1,0 +1,48 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+# `npm run dev > dev.log` output. Local noise, never part of a build.
+dev.log
+
+# env files (can opt-in for committing if needed)
+.env*
+# ...except the template. It holds no values, only the list of variables a full
+# build needs, and it is the only place that list is written down — without it
+# the next person to clone this has no way to know the contact form silently
+# degrades to a `mailto:` handoff when NEXT_PUBLIC_CONTACT_* are missing.
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

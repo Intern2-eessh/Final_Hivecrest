@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HIVECREST · Design System Specimen · Phase 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   LABORATORY CHROME — deliberately NOT the brand.
+   Cool neutral ground, engineering-drawing grid, dense technical plates.
+   Nothing here is a proposal for the website. This is measurement apparatus.
+   ══════════════════════════════════════════════════════════════════════════ */
+:root{
+  --lab-bg:#E8E9EA; --lab-plate:#FFFFFF; --lab-line:#C2C6C9; --lab-line-soft:#DFE2E4;
+  --lab-ink:#22282B; --lab-ink-2:#5A6469; --lab-ink-3:#8B9398; --lab-accent:#0B5FA5;
+
+  /* ── BRAND TOKENS UNDER TEST ── */
+  --ivory-1:#F6F6F4; --ivory-2:#FAF9F4; --ivory-3:#FDFAF2; --ivory-4:#FDF7EA; --ivory-5:#FCF6E6;
+  --paper:#FFFFFF;
+  --ink-1:#14110F; --ink-2:#1C1917; --ink-3:#443E39; --ink-4:#6B625A;
+  --ink-5:#9A9088; --ink-6:#C8C0B5; --ink-7:#E3DCD1; --ink-8:#F0EADF;
+  --honey-1:#FBF3D9; --honey-2:#F5C242; --honey-3:#D4AF37;
+  --honey-4:#A87C10; --honey-5:#8A6100; --honey-6:#5E4200;
+  --slate-1:#E7EBEC; --slate-2:#A8B5B9; --slate-3:#6B7C82; --slate-4:#47565C; --slate-5:#2C383D;
+  --danger:#A6321F; --danger-wash:#FBEDE9;
+
+  --font-display:"Space Grotesk",system-ui,sans-serif;
+  --font-text:"Inter",system-ui,sans-serif;
+
+  --ease-settle:cubic-bezier(.16,1,.30,1);
+  --ease-shift:cubic-bezier(.32,.72,.20,1);
+  --ease-reveal:cubic-bezier(.25,.60,.35,1);
+  --ease-press:cubic-bezier(.30,0,.20,1);
+  --ease-exit:cubic-bezier(.55,0,.85,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--lab-bg);
+  background-image:linear-gradient(var(--lab-line-soft) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--lab-line-soft) 1px,transparent 1px);
+  background-size:24px 24px;
+  color:var(--lab-ink); font-family:var(--font-text); font-size:14px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+code,.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.86em}
+
+/* ── Layout shell ── */
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 120px}
+.masthead{border-bottom:2px solid var(--lab-ink);padding:40px 0 18px;margin-bottom:8px}
+.masthead h1{font-family:var(--font-display);font-weight:700;font-size:30px;letter-spacing:-.02em}
+.masthead .sub{color:var(--lab-ink-2);margin-top:6px;max-width:64ch}
+.meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.tag{font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+     border:1px solid var(--lab-line);padding:5px 9px;color:var(--lab-ink-2);background:var(--lab-plate)}
+.tag.warn{border-color:#B9762A;color:#8A5416;background:#FDF3E7}
+
+nav.toc{position:sticky;top:0;z-index:50;background:rgba(232,233,234,.94);backdrop-filter:blur(8px);
+        border-bottom:1px solid var(--lab-line);padding:9px 0;margin-bottom:34px;
+        display:flex;flex-wrap:wrap;gap:4px}
+nav.toc a{font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+          color:var(--lab-ink-2);text-decoration:none;padding:4px 8px;border:1px solid transparent}
+nav.toc a:hover{color:var(--lab-ink);border-color:var(--lab-line);background:var(--lab-plate)}
+
+/* ── Plates ── */
+.plate{background:var(--lab-plate);border:1px solid var(--lab-line);margin-bottom:26px}
+.plate>header{display:flex;align-items:baseline;gap:12px;padding:11px 16px;border-bottom:1px solid var(--lab-line);
+              background:#F4F5F6}
+.plate>header .id{font-family:var(--font-display);font-weight:700;font-size:11px;letter-spacing:.14em;color:var(--lab-accent)}
+.plate>header h2{font-family:var(--font-display);font-weight:500;font-size:14px;letter-spacing:.02em}
+.plate>header .rule-ref{margin-left:auto;font-size:10px;color:var(--lab-ink-3);font-family:var(--font-display);letter-spacing:.08em}
+.plate .body{padding:20px 16px}
+.note{font-size:12px;color:var(--lab-ink-2);margin-top:12px;padding-left:11px;border-left:2px solid var(--lab-line);max-width:78ch}
+.note strong{color:var(--lab-ink)}
+h3.sub{font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+       color:var(--lab-ink-3);margin:26px 0 10px}
+h3.sub:first-child{margin-top:0}
+
+/* ── Data tables ── */
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{border:1px solid var(--lab-line-soft);padding:6px 8px;text-align:left}
+th{background:#F4F5F6;font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lab-ink-2)}
+td.num{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace}
+.pass-aaa{background:#E7F3EA;color:#1B5E2B}
+.pass-aa{background:#EAF0F7;color:#17457A}
+.pass-lg{background:#FDF6E3;color:#7A5B14}
+.fail{background:#FBEAE7;color:#8E2B1A}
+
+/* ── Swatches ── */
+.scale{display:flex;flex-wrap:wrap;gap:1px;background:var(--lab-line);border:1px solid var(--lab-line)}
+.sw{flex:1 1 130px;min-width:130px;padding:14px 11px;min-height:104px;display:flex;flex-direction:column;justify-content:flex-end}
+.sw .name{font-family:var(--font-display);font-weight:700;font-size:11px;letter-spacing:.06em}
+.sw .hex{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;opacity:.75;margin-top:2px}
+.sw .use{font-size:10px;line-height:1.35;margin-top:5px;opacity:.7}
+.sw.dark{color:#fff} .sw.dark .use{opacity:.65}
+
+.strip{display:flex;border:1px solid var(--lab-line)}
+.strip div{flex:1;height:66px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;
+           font-family:ui-monospace,Menlo,Consolas,monospace;font-size:9.5px;color:var(--ink-4)}
+
+/* ── Type ramp ── */
+.ramp-row{display:grid;grid-template-columns:118px 1fr;gap:16px;align-items:baseline;
+          padding:13px 0;border-bottom:1px solid var(--lab-line-soft)}
+.ramp-row:last-child{border-bottom:0}
+.ramp-meta{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--lab-ink-3);line-height:1.5}
+.ramp-meta b{display:block;color:var(--lab-accent);font-size:10.5px;font-weight:400}
+.ramp-spec{color:var(--lab-ink);}
+.t-meta{font-family:var(--font-display);font-weight:500;font-size:clamp(0.6875rem,0.665rem + 0.09vw,0.75rem);letter-spacing:.18em;line-height:1.2;text-transform:uppercase}
+.t-caption{font-family:var(--font-text);font-weight:400;font-size:clamp(0.8125rem,0.79rem + 0.09vw,0.875rem);line-height:1.5}
+.t-body-s{font-family:var(--font-text);font-weight:400;font-size:clamp(0.9375rem,0.915rem + 0.09vw,1rem);line-height:1.6}
+.t-body{font-family:var(--font-text);font-weight:400;font-size:clamp(1rem,0.955rem + 0.19vw,1.125rem);line-height:1.65}
+.t-body-l{font-family:var(--font-text);font-weight:400;font-size:clamp(1.125rem,1.058rem + 0.28vw,1.3125rem);letter-spacing:-.005em;line-height:1.6}
+.t-lead{font-family:var(--font-text);font-weight:400;font-size:clamp(1.3125rem,1.2rem + 0.47vw,1.625rem);letter-spacing:-.01em;line-height:1.5}
+.t-h4{font-family:var(--font-display);font-weight:500;font-size:clamp(1.5rem,1.366rem + 0.57vw,1.875rem);letter-spacing:-.015em;line-height:1.25}
+.t-h3{font-family:var(--font-display);font-weight:500;font-size:clamp(1.875rem,1.65rem + 0.94vw,2.5rem);letter-spacing:-.02em;line-height:1.15}
+.t-h2{font-family:var(--font-display);font-weight:700;font-size:clamp(2.5rem,2.05rem + 1.89vw,3.75rem);letter-spacing:-.025em;line-height:1.05}
+.t-h1{font-family:var(--font-display);font-weight:700;font-size:clamp(3.5rem,2.78rem + 3.02vw,5.5rem);letter-spacing:-.03em;line-height:.98}
+.t-monument{font-family:var(--font-display);font-weight:700;font-size:clamp(5rem,3.21rem + 7.55vw,10rem);letter-spacing:-.04em;line-height:.92}
+
+/* ── Grid seats ── */
+.gridbox{position:relative;border:1px solid var(--lab-line);background:#FCFCFC;padding:12px}
+.cols{position:absolute;inset:12px;display:grid;grid-template-columns:repeat(12,1fr);gap:8px;pointer-events:none}
+.cols span{background:rgba(11,95,165,.055);border-left:1px solid rgba(11,95,165,.16)}
+.seats{position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:8px;row-gap:7px}
+.seat{grid-column:var(--gc);background:var(--lab-ink);color:#fff;font-family:var(--font-display);font-weight:500;
+      font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:9px 10px;
+      clip-path:polygon(0 0,calc(100% - 12px) 0,100% 7px,100% 100%,0 100%)}
+.seat.mon{background:var(--lab-accent)}
+.seat.full{background:var(--lab-ink-2)}
+
+/* ── Spacing ruler ── */
+.ruler{display:flex;align-items:flex-end;gap:7px;flex-wrap:wrap}
+.ruler div{background:var(--lab-accent);opacity:.82;position:relative}
+.ruler div::after{content:attr(data-v);position:absolute;top:100%;left:0;font-family:ui-monospace,Menlo,Consolas,monospace;
+                  font-size:9px;color:var(--lab-ink-3);margin-top:3px}
+
+/* ── Cut corner ── */
+.cut-demo{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end}
+.cut-spec{background:var(--ivory-3);border:1px solid var(--ink-6);display:flex;align-items:flex-end;padding:9px;
+          font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--ink-4)}
+.c1{clip-path:polygon(0 0,calc(100% - 12px) 0,100% 7px,100% 100%,0 100%)}
+.c2{clip-path:polygon(0 0,calc(100% - 18px) 0,100% 10px,100% 100%,0 100%)}
+.c3{clip-path:polygon(0 0,calc(100% - 28px) 0,100% 16px,100% 100%,0 100%)}
+.c4{clip-path:polygon(0 0,calc(100% - 48px) 0,100% 28px,100% 100%,0 100%)}
+.c5{clip-path:polygon(0 0,calc(100% - 88px) 0,100% 51px,100% 100%,0 100%)}
+
+/* ── Materials ── */
+.mats{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;background:var(--ivory-3);padding:22px;border:1px solid var(--lab-line)}
+.mat-wrap{filter:none}
+.mat-wrap.paper{filter:drop-shadow(0 1px 2px rgba(28,25,23,.05)) drop-shadow(0 12px 28px rgba(28,25,23,.09))}
+.mat{padding:16px;min-height:118px;font-size:12px}
+.mat .lbl{font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:7px}
+.mat.paper{background:var(--paper);color:var(--ink-3)}
+.mat.inset{background:var(--ink-8);color:var(--ink-3)}
+.mat.inkm{background:var(--ink-1);color:var(--ivory-3)}
+.mat.line{border:1px solid var(--ink-6);color:var(--ink-3)}
+
+/* ── Motion ── */
+.curves{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.curve{border:1px solid var(--lab-line-soft);padding:11px}
+.curve h4{font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:.08em;margin-bottom:2px}
+.curve .cb{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:9.5px;color:var(--lab-ink-3);margin-bottom:8px}
+.track{height:26px;background:#F4F5F6;border:1px solid var(--lab-line-soft);position:relative;overflow:hidden;margin-top:9px}
+.puck{position:absolute;top:4px;left:4px;width:16px;height:16px;background:var(--lab-ink);
+      clip-path:polygon(0 0,calc(100% - 5px) 0,100% 3px,100% 100%,0 100%)}
+.btn{font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+     background:var(--lab-ink);color:#fff;border:0;padding:8px 13px;cursor:pointer;
+     clip-path:polygon(0 0,calc(100% - 12px) 0,100% 7px,100% 100%,0 100%)}
+.btn:hover{background:#000}
+.btn.ghost{background:transparent;color:var(--lab-ink);border:1px solid var(--lab-line)}
+
+/* ── Understructure demo ── */
+#under{position:relative;height:260px;background:var(--ivory-3);border:1px solid var(--lab-line);overflow:hidden;cursor:crosshair}
+#under .grid{position:absolute;inset:0;opacity:.09;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50V17L28 1l28 16v33z' fill='none' stroke='%23C8C0B5' stroke-width='1'/%3E%3Cpath d='M28 100L0 84V51l28-16 28 16v33z' fill='none' stroke='%23C8C0B5' stroke-width='1'/%3E%3C/svg%3E");
+  background-size:84px 150px;
+  -webkit-mask-image:radial-gradient(circle 260px at var(--ux,-999px) var(--uy,-999px),#000 0%,#000 30%,transparent 72%);
+  mask-image:radial-gradient(circle 260px at var(--ux,-999px) var(--uy,-999px),#000 0%,#000 30%,transparent 72%)}
+#under .cap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-4)}
+
+/* ── State contract samples ── */
+.states{display:flex;flex-wrap:wrap;gap:11px}
+.s-btn{font-family:var(--font-text);font-weight:600;font-size:13px;padding:13px 22px;border:0;cursor:pointer;
+       background:var(--ink-2);color:#fff;transition:background 180ms var(--ease-reveal);
+       clip-path:polygon(0 0,calc(100% - 18px) 0,100% 10px,100% 100%,0 100%)}
+.s-btn:hover{background:var(--ink-1)}
+.s-btn:active{background:#000;transform:translateY(1px);transition-duration:90ms}
+.s-btn:focus-visible{outline:2px solid var(--honey-5);outline-offset:3px}
+.s-btn.sec{background:transparent;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--ink-6)}
+.s-btn.sec:hover{background:var(--ink-8)}
+.s-btn[disabled]{background:transparent;color:var(--ink-5);cursor:not-allowed;box-shadow:inset 0 0 0 1px var(--ink-7)}
+.s-btn[disabled]:hover{background:transparent}
+
+/* ── Honey budget demo ── */
+.budget{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.vp{background:var(--ivory-3);border:1px solid var(--lab-line);padding:18px;min-height:216px}
+.vp .cap{font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+         color:var(--lab-ink-3);margin-bottom:13px;padding-bottom:6px;border-bottom:1px solid var(--ink-7)}
+.chip-old{display:inline-block;background:var(--honey-1);border:1px solid rgba(212,175,55,.25);color:var(--honey-5);
+          font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;border-radius:99px;margin:0 5px 5px 0}
+.lbl-new{font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+         color:var(--ink-4);display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.lbl-new::before{content:"";width:24px;height:1px;background:var(--ink-6);flex:none}
+.hexb{width:10px;height:10px;display:inline-block;flex:none;
+      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+.count{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;margin-top:12px;padding-top:8px;border-top:1px dashed var(--ink-6)}
+.count.bad{color:#8E2B1A} .count.good{color:#1B5E2B}
+
+footer.lab{border-top:2px solid var(--lab-ink);margin-top:44px;padding-top:16px;font-size:11px;color:var(--lab-ink-2);
+           display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
+@media (max-width:640px){.ramp-row{grid-template-columns:1fr}.plate .body{padding:16px 12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="masthead">
+  <h1>HIVECREST — Design System Specimen</h1>
+  <p class="sub">Measurement apparatus for the Phase 1 core system. Every value on this page is under test.
+     This is a laboratory, not a website — it deliberately does not resemble the finished site and contains
+     no page layouts, no hero, and no navigation design.</p>
+  <div class="meta-row">
+    <span class="tag">Phase 1 — core system</span>
+    <span class="tag">Draft for approval</span>
+    <span class="tag">Ref: BRAND-BIBLE.md</span>
+    <span class="tag warn">View in a colour-managed browser · light ambient only</span>
+  </div>
+</div>
+
+<nav class="toc">
+  <a href="#colour">01 Colour</a><a href="#matrix">02 Contrast</a><a href="#budget">03 Honey budget</a>
+  <a href="#type">04 Type ramp</a><a href="#voices">05 Voices</a><a href="#grid">06 Grid</a>
+  <a href="#space">07 Spacing</a><a href="#geom">08 Geometry</a><a href="#surface">09 Surface</a>
+  <a href="#motion">10 Motion</a><a href="#inter">11 Interaction</a><a href="#flat">12 Flat &amp; opaque</a>
+</nav>
+
+<!-- ══════════ 01 COLOUR ══════════ -->
+<section class="plate" id="colour">
+  <header><span class="id">PLATE 01</span><h2>Colour — the four families</h2><span class="rule-ref">§02</span></header>
+  <div class="body">
+
+    <h3 class="sub">Ivory · the surface scale · cool → warm</h3>
+    <div class="scale" id="ivory-scale"></div>
+    <div class="note"><strong>Perception test.</strong> The strip below is the same five values, adjacent and
+      unlabelled. Maximum contrast ratio end-to-end is <strong>1.04</strong>; adjacent steps are 1.011–1.026.
+      No single step should be visible as a boundary. If you can see bands, the scale is wrong — that is the
+      failure this test exists to catch.</div>
+    <div class="strip" style="margin-top:12px">
+      <div style="background:var(--ivory-1)"></div><div style="background:var(--ivory-2)"></div>
+      <div style="background:var(--ivory-3)"></div><div style="background:var(--ivory-4)"></div>
+      <div style="background:var(--ivory-5)"></div>
+    </div>
+    <div class="note">Warmth (red minus blue) is monotonic: <code>2 → 6 → 11 → 19 → 22</code>. The scale
+      registers as <strong>temperature, not brightness</strong> — which is why it reads as passing time rather
+      than as banded sections.</div>
+
+    <h3 class="sub">Ink · structure</h3>
+    <div class="scale" id="ink-scale"></div>
+
+    <h3 class="sub">Honey · the mark of resolution</h3>
+    <div class="scale" id="honey-scale"></div>
+    <div class="note"><strong>Measured warning.</strong> <code>honey-2</code> and <code>honey-3</code> score
+      <strong>1.59</strong> and <strong>2.02</strong> against ivory-3. They are fills, never inks, on any light
+      ground. On <code>ink-1</code> the same two score 11.35 and 8.94 — on dark they are unrestricted. This is
+      the single most common way a gold brand goes wrong.</div>
+
+    <h3 class="sub">Slate · the unresolved</h3>
+    <div class="scale" id="slate-scale"></div>
+    <div class="note">Quarantined to the noise register. Slate and honey are <strong>opposites in meaning</strong>,
+      not merely in temperature: slate is the problem, honey is the resolution. The page loses its cold as it
+      descends.</div>
+  </div>
+</section>
+
+<!-- ══════════ 02 CONTRAST MATRIX ══════════ -->
+<section class="plate" id="matrix">
+  <header><span class="id">PLATE 02</span><h2>Contrast matrix — computed live</h2><span class="rule-ref">§02.12</span></header>
+  <div class="body">
+    <div class="note" style="margin-top:0"><strong>These numbers are calculated in this page, not transcribed.</strong>
+      WCAG 2.1 relative luminance, computed on load from the token values above. A foreground/background pair
+      that is not in this table is not permitted in the system.</div>
+    <div style="overflow-x:auto;margin-top:14px"><table id="cmatrix"></table></div>
+    <div class="note">Legend — <span class="pass-aaa" style="padding:1px 5px">AAA ≥7</span>
+      <span class="pass-aa" style="padding:1px 5px">AA ≥4.5</span>
+      <span class="pass-lg" style="padding:1px 5px">AA-large ≥3</span>
+      <span class="fail" style="padding:1px 5px">fail &lt;3</span></div>
+  </div>
+</section>
+
+<!-- ══════════ 03 HONEY BUDGET ══════════ -->
+<section class="plate" id="budget">
+  <header><span class="id">PLATE 03</span><h2>The honey budget — three marks per viewport</h2><span class="rule-ref">§02.6–02.7</span></header>
+  <div class="body">
+    <div class="budget">
+      <div class="vp">
+        <div class="cap">Current site — measured from source</div>
+        <span class="chip-old">Who we are</span><span class="chip-old">Voice AI</span>
+        <span class="chip-old">Live transcription</span><span class="chip-old">CRM sync</span>
+        <span class="chip-old">Next.js</span><span class="chip-old">TypeScript</span>
+        <div style="margin-top:11px;display:flex;gap:9px;align-items:center">
+          <span style="width:34px;height:34px;background:var(--honey-1);border:1px solid rgba(212,175,55,.25);
+                       border-radius:99px;display:flex;align-items:center;justify-content:center;
+                       color:var(--honey-5);font-size:10px;font-weight:700">01</span>
+          <span style="font-size:12px;color:var(--ink-4)">index badge · icon tile · bullet · quote rule</span>
+        </div>
+        <div style="margin-top:10px;border-left:2px solid rgba(212,175,55,.5);padding-left:12px;
+                    font-size:12px;font-style:italic;color:var(--ink-4)">Outcome line, honey rule</div>
+        <div class="count bad">honey marks in view: 9 — six over budget</div>
+      </div>
+
+      <div class="vp" style="background:var(--ivory-4)">
+        <div class="cap">Under this system</div>
+        <div class="lbl-new">Who we are</div>
+        <p style="font-family:var(--font-text);font-size:14px;line-height:1.6;color:var(--ink-3);max-width:44ch">
+          We replace the spreadsheet, the WhatsApp group and the follow-up call with
+          <span style="color:var(--honey-5);font-weight:600">one system</span> a team can run.</p>
+        <ul style="list-style:none;margin-top:13px;display:flex;flex-direction:column;gap:7px">
+          <li style="display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--ink-3)">
+            <span class="hexb" style="background:var(--honey-3);margin-top:4px"></span>Voice AI, live transcription, CRM sync</li>
+          <li style="display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--ink-3)">
+            <span class="hexb" style="background:var(--ink-6);margin-top:4px"></span>Next.js · TypeScript · PostgreSQL</li>
+        </ul>
+        <div class="count good">honey marks in view: 2 — within budget</div>
+      </div>
+    </div>
+    <div class="note">The right-hand panel carries the same information. Labels and tags are demoted to ink;
+      honey survives on exactly the phrase that matters and one bullet. <strong>The accent recovers its
+      meaning by being spent less.</strong></div>
+  </div>
+</section>
+
+<!-- ══════════ 04 TYPE RAMP ══════════ -->
+<section class="plate" id="type">
+  <header><span class="id">PLATE 04</span><h2>Type ramp — 11 steps, live at this viewport</h2><span class="rule-ref">§03</span></header>
+  <div class="body" id="ramp">
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-meta</b>display · 500 · .18em<span class="px"></span></div><div class="ramp-spec t-meta">Structural label 09:40</div></div>
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-caption</b>text · 400<span class="px"></span></div><div class="ramp-spec t-caption">Caption and attribution text.</div></div>
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-body-s</b>text · 400<span class="px"></span></div><div class="ramp-spec t-body-s">Small body. Dense supporting copy sits here.</div></div>
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-body</b>text · 400<span class="px"></span></div><div class="ramp-spec t-body">Body. Software should make the working day shorter, not add another login to it.</div></div>
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-body-l</b>text · 400<span class="px"></span></div><div class="ramp-spec t-body-l">Large body. If it only works in a demo, it does not work.</div></div>
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-lead</b>text · 400<span class="px"></span></div><div class="ramp-spec t-lead">Lead paragraph. We build for the conditions the work happens in.</div></div>
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-h4</b>display · 500<span class="px"></span></div><div class="ramp-spec t-h4">Fourth-level heading</div></div>
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-h3</b>display · 500<span class="px"></span></div><div class="ramp-spec t-h3">Third-level heading</div></div>
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-h2</b>display · 700<span class="px"></span></div><div class="ramp-spec t-h2">Section statement</div></div>
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-h1</b>display · 700<span class="px"></span></div><div class="ramp-spec t-h1">The sixth month</div></div>
+    <div class="ramp-row"><div class="ramp-meta"><b>--t-monument</b>display · 700<br>2 uses sitewide<span class="px"></span></div><div class="ramp-spec t-monument" style="overflow:hidden">06</div></div>
+    <div class="note"><strong>Step contrast.</strong> The current site uses four sizes and tops out at 60px, which
+      is why hierarchy reads flat. Adjacent elements must be at least <strong>two ramp steps apart</strong>.
+      Resize this window — every value is fluid between 380 and 1440px.</div>
+  </div>
+</section>
+
+<!-- ══════════ 05 TWO VOICES ══════════ -->
+<section class="plate" id="voices">
+  <header><span class="id">PLATE 05</span><h2>The two voices — no new fonts</h2><span class="rule-ref">§03.1–03.2</span></header>
+  <div class="body">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:20px">
+      <div style="border:1px solid var(--lab-line-soft);padding:16px">
+        <div class="t-meta" style="color:var(--ink-4);margin-bottom:12px">Structural — Space Grotesk</div>
+        <div style="font-family:var(--font-display);font-weight:700;font-size:56px;letter-spacing:-.03em;line-height:1;color:var(--ink-2)">01 · 09:40</div>
+        <div style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-4);margin-top:12px">
+          Day 00 &nbsp;·&nbsp; Month 06 &nbsp;·&nbsp; What we build</div>
+        <p style="font-size:12px;color:var(--lab-ink-2);margin-top:13px">Headings · labels · numerals · measurements ·
+           timestamps. Geometric letterforms and even-width figures already read technical when set small,
+           tracked, and uppercase.</p>
+      </div>
+      <div style="border:1px solid var(--lab-line-soft);padding:16px">
+        <div class="t-meta" style="color:var(--ink-4);margin-bottom:12px">Reading — Inter</div>
+        <p style="font-family:var(--font-text);font-size:17px;line-height:1.65;color:var(--ink-3);max-width:44ch">
+          We would rather ship one system a team uses every morning than five that impress in a presentation.</p>
+        <p style="font-size:12px;color:var(--lab-ink-2);margin-top:13px">Body · paragraphs · form fields · buttons.
+           Neutral, invisible, built for long reading at small sizes.</p>
+      </div>
+    </div>
+    <div class="note"><strong>This split solves the missing-monospace problem without adding a face.</strong>
+      Giving Space Grotesk the label-and-numeral job creates the engineering register the site lacks.
+      <code>--font-mono</code> stays reserved and unbound; switching it on later reassigns these two jobs and
+      changes nothing else.</div>
+
+    <h3 class="sub">Weight whitelist — four weights exist</h3>
+    <table>
+      <tr><th>Face</th><th>Weight</th><th>Job</th><th>Specimen</th></tr>
+      <tr><td>Space Grotesk</td><td class="num">500</td><td>Labels · h4 · h3</td><td style="font-family:var(--font-display);font-weight:500;font-size:19px">Recognition that backs the work</td></tr>
+      <tr><td>Space Grotesk</td><td class="num">700</td><td>h2 · h1 · monument</td><td style="font-family:var(--font-display);font-weight:700;font-size:19px">Recognition that backs the work</td></tr>
+      <tr><td>Inter</td><td class="num">400</td><td>All body copy</td><td style="font-family:var(--font-text);font-weight:400;font-size:16px">Recognition that backs the work</td></tr>
+      <tr><td>Inter</td><td class="num">600</td><td>Buttons · form labels · one emphasised word</td><td style="font-family:var(--font-text);font-weight:600;font-size:16px">Recognition that backs the work</td></tr>
+    </table>
+    <div class="note">Semibold body, bold body, light weights and italic display are forbidden. Italic survives
+      only at caption size, for a single attributed line.</div>
+  </div>
+</section>
+
+<!-- ══════════ 06 GRID ══════════ -->
+<section class="plate" id="grid">
+  <header><span class="id">PLATE 06</span><h2>Seats — the fix for centred sameness</h2><span class="rule-ref">§04.1–04.4</span></header>
+  <div class="body">
+    <div class="gridbox">
+      <div class="cols"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="seats">
+        <div class="seat" style="--gc:1 / 8">seat-anchor · 1–7 · default</div>
+        <div class="seat" style="--gc:3 / 10">seat-inset · 3–9</div>
+        <div class="seat" style="--gc:6 / 13">seat-offset · 6–12</div>
+        <div class="seat full" style="--gc:1 / 13">seat-full · 1–12 · structural only</div>
+        <div class="seat mon" style="--gc:3 / 11">seat-monument · 3–10 · budget 2 sitewide</div>
+      </div>
+    </div>
+    <div class="note"><strong>The half-offset law.</strong> Consecutive sections may not share a seat, and
+      adjacent seats must differ by at least 2 columns. That produces the brick rag of a honeycomb's offset
+      rows — <strong>the comb expressed as layout rather than as wallpaper.</strong> Below 900px, seats become
+      left-aligned blocks with a varying left indent (0, 1 or 2 columns) so the rag survives the breakpoint and
+      mobile does not flatten into one centred column.</div>
+    <table style="margin-top:14px">
+      <tr><th>Breakpoint</th><th>Width</th><th>Cols</th><th>Gutter</th><th>Margin</th><th>Max content</th></tr>
+      <tr><td>xs</td><td>380–639</td><td class="num">4</td><td class="num">16</td><td class="num">24</td><td>fluid</td></tr>
+      <tr><td>sm</td><td>640–899</td><td class="num">8</td><td class="num">24</td><td class="num">32</td><td>fluid</td></tr>
+      <tr><td>md</td><td>900–1199</td><td class="num">12</td><td class="num">24</td><td class="num">48</td><td>fluid</td></tr>
+      <tr><td>lg</td><td>1200–1439</td><td class="num">12</td><td class="num">32</td><td class="num">64</td><td class="num">1280</td></tr>
+      <tr><td>xl</td><td>≥1440</td><td class="num">12</td><td class="num">32</td><td>auto</td><td class="num">1280</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════ 07 SPACING ══════════ -->
+<section class="plate" id="space">
+  <header><span class="id">PLATE 07</span><h2>Spacing scale &amp; the vertical decrescendo</h2><span class="rule-ref">§04.5–04.7</span></header>
+  <div class="body">
+    <h3 class="sub">Spacing — base 4px</h3>
+    <div class="ruler" id="ruler" style="margin-bottom:22px"></div>
+
+    <h3 class="sub">Vertical rhythm — density carries the narrative</h3>
+    <div style="display:flex;gap:1px;background:var(--lab-line);border:1px solid var(--lab-line);align-items:flex-end">
+      <div style="flex:1;background:var(--ivory-1);height:96px;display:flex;flex-direction:column;justify-content:flex-end;padding:8px">
+        <div style="font-family:var(--font-display);font-weight:700;font-size:11px">--rhythm-1</div>
+        <div style="font-family:ui-monospace,monospace;font-size:9.5px;color:var(--ink-4)">72 / 96 · noise</div></div>
+      <div style="flex:1;background:var(--ivory-2);height:128px;display:flex;flex-direction:column;justify-content:flex-end;padding:8px">
+        <div style="font-family:var(--font-display);font-weight:700;font-size:11px">--rhythm-2</div>
+        <div style="font-family:ui-monospace,monospace;font-size:9.5px;color:var(--ink-4)">96 / 128 · working</div></div>
+      <div style="flex:1;background:var(--ivory-4);height:176px;display:flex;flex-direction:column;justify-content:flex-end;padding:8px">
+        <div style="font-family:var(--font-display);font-weight:700;font-size:11px">--rhythm-3</div>
+        <div style="font-family:ui-monospace,monospace;font-size:9.5px;color:var(--ink-4)">128 / 176 · resolving</div></div>
+      <div style="flex:1;background:var(--ivory-5);height:240px;display:flex;flex-direction:column;justify-content:flex-end;padding:8px">
+        <div style="font-family:var(--font-display);font-weight:700;font-size:11px">--rhythm-4</div>
+        <div style="font-family:ui-monospace,monospace;font-size:9.5px;color:var(--ink-4)">176 / 240 · settled</div></div>
+    </div>
+    <div class="note">The current site pads every section identically at 56/80px. Here, <strong>density is the
+      narrative</strong>: sections open out as the page resolves, and rhythm may only ever increase downward.
+      The page breathes out once, across its full length. Note that the grounds warm across the same axis.</div>
+  </div>
+</section>
+
+<!-- ══════════ 08 GEOMETRY ══════════ -->
+<section class="plate" id="geom">
+  <header><span class="id">PLATE 08</span><h2>The cut corner — form signature</h2><span class="rule-ref">§05</span></header>
+  <div class="body">
+    <div style="display:flex;flex-wrap:wrap;gap:26px;align-items:flex-start">
+      <svg width="260" height="150" viewBox="0 0 260 150" style="border:1px solid var(--lab-line-soft);flex:none;background:#FCFCFC">
+        <path d="M20 20 H180 L212 38 V130 H20 Z" fill="var(--ivory-3)" stroke="var(--ink-6)" stroke-width="1.5"/>
+        <line x1="180" y1="20" x2="212" y2="20" stroke="var(--lab-accent)" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="212" y1="20" x2="212" y2="38" stroke="var(--lab-accent)" stroke-width="1" stroke-dasharray="3 3"/>
+        <path d="M186 20 A 26 26 0 0 1 190 30" fill="none" stroke="var(--lab-accent)" stroke-width="1.2"/>
+        <text x="196" y="16" font-family="ui-monospace,monospace" font-size="10" fill="var(--lab-accent)">w</text>
+        <text x="218" y="32" font-family="ui-monospace,monospace" font-size="10" fill="var(--lab-accent)">h</text>
+        <text x="196" y="40" font-family="ui-monospace,monospace" font-size="10" fill="var(--lab-accent)">30°</text>
+        <text x="20" y="146" font-family="ui-monospace,monospace" font-size="10" fill="var(--lab-ink-3)">h = w · tan(30°) = 0.5774 · w</text>
+      </svg>
+      <div style="flex:1;min-width:250px">
+        <table>
+          <tr><th>Token</th><th>w</th><th>h</th><th>Applies to</th></tr>
+          <tr><td><code>--cut-1</code></td><td class="num">12</td><td class="num">7</td><td>Tags, small controls</td></tr>
+          <tr><td><code>--cut-2</code></td><td class="num">18</td><td class="num">10</td><td>Buttons, fields, rows</td></tr>
+          <tr><td><code>--cut-3</code></td><td class="num">28</td><td class="num">16</td><td>Panels, media frames</td></tr>
+          <tr><td><code>--cut-4</code></td><td class="num">48</td><td class="num">28</td><td>Large surfaces</td></tr>
+          <tr><td><code>--cut-5</code></td><td class="num">88</td><td class="num">51</td><td>Full-bleed bands</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <h3 class="sub">Rendered at every scale</h3>
+    <div class="cut-demo">
+      <div class="cut-spec c1" style="width:104px;height:44px">cut-1</div>
+      <div class="cut-spec c2" style="width:140px;height:56px">cut-2</div>
+      <div class="cut-spec c3" style="width:190px;height:92px">cut-3</div>
+      <div class="cut-spec c4" style="width:250px;height:128px">cut-4</div>
+    </div>
+    <div class="cut-spec c5" style="width:100%;height:132px;margin-top:16px">cut-5 · full-bleed band</div>
+    <div class="note"><strong>Two implementation facts, not preferences.</strong> ① <code>clip-path</code> removes
+      <code>box-shadow</code> — a cut surface needing elevation uses <code>filter: drop-shadow()</code> on a
+      wrapper, or the shadow silently renders nothing. ② Nesting a cut child inside a cut parent at the same
+      corner produces a stepped, ragged edge; the child reverts to a plain rectangle.
+      <strong><code>border-radius</code> is 0 everywhere</strong> — the only surviving circles are portraits,
+      status dots and avatars.</div>
+
+    <h3 class="sub">Hairlines — three weights, three meanings</h3>
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:520px">
+      <div><div style="height:1px;background:var(--ink-7)"></div><div style="font-family:ui-monospace,monospace;font-size:10px;color:var(--lab-ink-3);margin-top:5px">1px · ink-7 · separation within a group</div></div>
+      <div><div style="height:1px;background:var(--ink-6)"></div><div style="font-family:ui-monospace,monospace;font-size:10px;color:var(--lab-ink-3);margin-top:5px">1px · ink-6 · boundary between groups</div></div>
+      <div><div style="height:2px;background:var(--ink-2)"></div><div style="font-family:ui-monospace,monospace;font-size:10px;color:var(--lab-ink-3);margin-top:5px">2px · ink-2 · structural edge, chapter level</div></div>
+    </div>
+
+    <h3 class="sub">The hex bullet — the only list marker in the system</h3>
+    <div style="display:flex;gap:26px;align-items:flex-end;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:9px"><span class="hexb" style="width:8px;height:8px;background:var(--ink-6)"></span><span style="font-size:11px;color:var(--lab-ink-2)">8px inline</span></div>
+      <div style="display:flex;align-items:center;gap:9px"><span class="hexb" style="width:10px;height:10px;background:var(--ink-6)"></span><span style="font-size:11px;color:var(--lab-ink-2)">10px list</span></div>
+      <div style="display:flex;align-items:center;gap:9px"><span class="hexb" style="width:14px;height:14px;background:var(--honey-3)"></span><span style="font-size:11px;color:var(--lab-ink-2)">14px feature · honey (counts against budget)</span></div>
+    </div>
+    <div class="note">Discs, dashes, chevrons and check marks are removed. The comb survives in exactly three
+      places — the layout offset, this bullet, and the understructure — and in all three it holds something up.
+      The 5%-opacity wallpaper is deleted.</div>
+  </div>
+</section>
+
+<!-- ══════════ 09 SURFACE ══════════ -->
+<section class="plate" id="surface">
+  <header><span class="id">PLATE 09</span><h2>Materials — replacing the single card surface</h2><span class="rule-ref">§06</span></header>
+  <div class="body">
+    <div class="mats">
+      <div class="mat-wrap paper"><div class="mat paper c3"><div class="lbl">Paper</div>Lifted above the page. Media and forms. Must be earned — elevation is not packaging.</div></div>
+      <div class="mat-wrap"><div class="mat inset c2"><div class="lbl">Inset</div>Recessed. Supporting detail, specs, metadata, quotes.</div></div>
+      <div class="mat-wrap"><div class="mat inkm c5"><div class="lbl" style="color:var(--honey-3)">Ink</div>The dark chapter. Full-bleed only, exactly once in the entire site.</div></div>
+      <div class="mat-wrap"><div class="mat line c3"><div class="lbl">Line</div>Structure without weight. <strong>The default material.</strong></div></div>
+    </div>
+    <div class="note"><code>.card-surface</code> — described in its own source comment as <em>"the one surface
+      treatment sitewide"</em> — is why every block currently reads as the same object. <strong>Line is the
+      default; Paper must be earned.</strong> One elevation level per screen; a Paper surface may never contain
+      another Paper surface.</div>
+  </div>
+</section>
+
+<!-- ══════════ 10 MOTION ══════════ -->
+<section class="plate" id="motion">
+  <header><span class="id">PLATE 10</span><h2>Motion — curves, plotted and played</h2><span class="rule-ref">§07</span></header>
+  <div class="body">
+    <button class="btn" id="playAll">▶ Play all curves</button>
+    <div class="curves" id="curves" style="margin-top:16px"></div>
+    <div class="note"><code>--ease-settle</code> is derived from the one piece of motion craft already on the
+      site — the wordmark's alternating letter convergence with a long deceleration tail. <strong>That physics
+      was right; it is now the law.</strong> Watch for the tail: mass coming to rest, never overshooting.</div>
+
+    <h3 class="sub">Duration scale — distance sets duration</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:9px;align-items:flex-end" id="durs"></div>
+    <div class="note">Equal durations across unequal distances is why uniform fade-ups feel synthetic — the
+      objects have no consistent mass. A 4px move takes 180ms; a 200px move takes 620ms.</div>
+
+    <h3 class="sub">The banned list</h3>
+    <table>
+      <tr><th>Forbidden</th><th>Because</th></tr>
+      <tr><td><code>opacity 0→1</code> + <code>translateY</code></td><td>Matter does not fade into existence. <strong>This is the current site's entire motion vocabulary.</strong></td></tr>
+      <tr><td>Bounce · elastic · back · any overshoot</td><td>No physical object of known weight does this</td></tr>
+      <tr><td><code>scale</code> from 0</td><td>Creation by scroll</td></tr>
+      <tr><td>Parallax on text</td><td>Moves while being read</td></tr>
+      <tr><td>Hover effects that change layout</td><td>Surfaces are not magnetic (see <code>hover:-translate-y-1.5</code>)</td></tr>
+    </table>
+    <div class="note"><strong>Four verbs exist: settle · shift · reveal · hold.</strong> Note what is absent —
+      <em>enter</em>, <em>appear</em>, <em>pop</em>. Objects are not created by scrolling. The choreography
+      budget shrinks down the page: 6 → 4 → 2 → 1 simultaneously moving elements. By the foot of the page, one
+      thing moves, then nothing does.</div>
+  </div>
+</section>
+
+<!-- ══════════ 11 INTERACTION ══════════ -->
+<section class="plate" id="inter">
+  <header><span class="id">PLATE 11</span><h2>Interaction — the understructure &amp; state contracts</h2><span class="rule-ref">§08</span></header>
+  <div class="body">
+    <h3 class="sub">The understructure — move your pointer across the plate</h3>
+    <div id="under"><div class="grid"></div><div class="cap">the digital backbone your business grows on</div></div>
+    <div class="note">Peak opacity <strong>0.09</strong>, 260px radius, hex cell 84×150. It writes two CSS custom
+      properties on pointer move and composites on its own layer — no layout, no reflow, no content repaint.
+      <strong>Disabled below 1024px and on coarse pointers</strong>: there is no pointer to follow, and a
+      decorative tap target teaches the user a lie about what is clickable. It is felt, not read — if you find
+      yourself looking at the grid instead of the words, it is too strong. This is the <em>only</em>
+      cursor-driven effect in the system.</div>
+
+    <h3 class="sub">State contracts — hover, press, and tab to these</h3>
+    <div class="states">
+      <button class="s-btn">Primary action</button>
+      <button class="s-btn sec">Secondary action</button>
+      <button class="s-btn" disabled>Disabled</button>
+    </div>
+    <div class="note"><strong>Hover changes value, never position.</strong> The current
+      <code>hover:-translate-y-1.5</code> on cards violates Law 3 — surfaces are not magnetic and do not rise
+      toward a pointer. Tab to the buttons above: the focus ring is <code>honey-5</code>, one of only five
+      permitted honey marks, because focus genuinely <em>is</em> the most important thing on screen when it is
+      present. Target floor is 44×44px, including inline links in dense text.</div>
+
+    <table style="margin-top:16px">
+      <tr><th>State</th><th>Treatment</th><th>Timing</th></tr>
+      <tr><td>Default</td><td>Material per §06</td><td>—</td></tr>
+      <tr><td>Hover</td><td>Ground shifts one ink step. No movement, no shadow, no scale.</td><td><code>180ms / --ease-reveal</code></td></tr>
+      <tr><td>Press</td><td>Ground shifts one further step + 1px optical inset</td><td><code>90ms / --ease-press</code></td></tr>
+      <tr><td>Focus-visible</td><td>2px <code>honey-5</code> outline, 3px offset. <code>honey-2</code> on Ink.</td><td><code>180ms</code></td></tr>
+      <tr><td>Disabled</td><td><code>ink-5</code> foreground, no ground, <code>not-allowed</code></td><td>—</td></tr>
+    </table>
+    <div class="note"><strong>Reduced motion resolves to the settled end state</strong> — not a shortened
+      animation, not a cross-fade: the final frame, immediately. This system gets that for free, because every
+      sequence resolves <em>to</em> the composition the design is aiming at. The accessible path is also the
+      best-looking one.</div>
+  </div>
+</section>
+
+<!-- ══════════ 12 FLAT & OPAQUE ══════════ -->
+<section class="plate" id="flat">
+  <header><span class="id">PLATE 12</span><h2>Flat &amp; opaque — two rules added by the coverage test</h2><span class="rule-ref">§02.13 · §06.5</span></header>
+  <div class="body">
+    <div class="note" style="margin-top:0">Both rules exist because the Phase 1 coverage test found patterns
+      in active use that no rule governed — gradients in <strong>6 components</strong>, translucency in
+      <strong>5</strong>. That is what the coverage test is for.</div>
+
+    <h3 class="sub">Colour is flat</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px">
+      <div>
+        <div style="height:88px;background:linear-gradient(180deg,#FFE9A3 0%,#F5C242 26%,#D4AF37 52%,#B8860B 78%,#8A6100 100%);
+                    display:flex;align-items:center;justify-content:center;font-family:var(--font-display);
+                    font-weight:700;font-size:26px;color:#fff;letter-spacing:.04em">HIVECREST</div>
+        <div style="font-family:ui-monospace,monospace;font-size:10px;color:#8E2B1A;margin-top:6px">
+          ✗ current — 5-stop gradient fill (PremiumHero.tsx:313)</div>
+      </div>
+      <div>
+        <div style="height:88px;background:var(--honey-3);display:flex;align-items:center;justify-content:center;
+                    font-family:var(--font-display);font-weight:700;font-size:26px;color:var(--ink-1);letter-spacing:.04em">HIVECREST</div>
+        <div style="font-family:ui-monospace,monospace;font-size:10px;color:#1B5E2B;margin-top:6px">
+          ✓ flat --honey-3</div>
+      </div>
+    </div>
+    <div class="note"><strong>A gradient is light that has no source.</strong> It belongs to the launch-day
+      register — the reveal, the product shot, the hero glow — and it is the fastest way for a gold brand to
+      read as ceremonial rather than engineered. Going flat also removes the per-letter
+      <code>background-clip:text</code> workaround the current wordmark needs, because a gradient on a parent
+      does not follow transformed children. <strong>Exceptions, both non-visible:</strong>
+      <code>mask-image</code> and the understructure falloff — a gradient used as a tool, never as colour.</div>
+
+    <h3 class="sub">Surfaces are opaque</h3>
+    <div style="position:relative;border:1px solid var(--lab-line);height:150px;overflow:hidden;background:var(--ivory-3)">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 18px;gap:9px;flex-wrap:wrap">
+        <span style="font-family:var(--font-display);font-weight:700;font-size:34px;color:var(--ink-6)">CONTENT SCROLLING BEHIND</span>
+      </div>
+      <div style="position:absolute;top:0;left:0;right:0;height:52px;background:rgba(253,250,242,.85);
+                  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(28,25,23,.08);
+                  display:flex;align-items:center;padding:0 16px;font-family:var(--font-display);font-weight:500;
+                  font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-4)">
+        ✗ bg-ivory/85 + backdrop-blur-md — current nav</div>
+      <div style="position:absolute;bottom:0;left:0;right:0;height:52px;background:var(--ivory-3);
+                  border-top:1px solid var(--ink-6);display:flex;align-items:center;padding:0 16px;
+                  font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:.16em;
+                  text-transform:uppercase;color:var(--ink-4)">✓ opaque ground + 1px ink-6 hairline</div>
+    </div>
+    <div class="note"><strong>Three reasons, in order of weight.</strong> ① A surface that shows what is behind
+      it has no substance, and substance is the point. ② <strong>It cannot be contrast-audited</strong> — the
+      measured ratio of text on a translucent ground depends on whatever happens to scroll behind it, which
+      makes Rule 02.12 unenforceable. ③ <code>backdrop-filter</code> forces a full-screen composite every
+      frame, and is one of the most reliable ways to drop frames on exactly the low-cost Android hardware this
+      company's own copy promises to build for. <strong>A brand that says it builds for patchy connections and
+      cheap Android phones cannot ship a frosted navigation bar.</strong> Sole exception: a full-screen modal
+      scrim at <code>--ink-1</code> / 55%, which carries no text and covers the viewport rather than
+      compositing a strip.</div>
+  </div>
+</section>
+
+<footer class="lab">
+  <span>HIVECREST · Design System Specimen · Phase 1 · draft for approval</span>
+  <span>Phase 2 deferred: wordmark · iconography · photography · components · section archetypes</span>
+</footer>
+</div>
+
+<script>
+/* ── Palette under test ─────────────────────────────────────────────────── */
+const T = {
+  'ivory-1':'#F6F6F4','ivory-2':'#FAF9F4','ivory-3':'#FDFAF2','ivory-4':'#FDF7EA','ivory-5':'#FCF6E6',
+  'paper':'#FFFFFF','ink-1':'#14110F','ink-2':'#1C1917','ink-3':'#443E39','ink-4':'#6B625A',
+  'ink-5':'#9A9088','ink-6':'#C8C0B5','ink-7':'#E3DCD1','ink-8':'#F0EADF',
+  'honey-1':'#FBF3D9','honey-2':'#F5C242','honey-3':'#D4AF37','honey-4':'#A87C10','honey-5':'#8A6100','honey-6':'#5E4200',
+  'slate-1':'#E7EBEC','slate-2':'#A8B5B9','slate-3':'#6B7C82','slate-4':'#47565C','slate-5':'#2C383D',
+  'danger':'#A6321F','danger-wash':'#FBEDE9'
+};
+const lin = c => (c/=255) <= .04045 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4);
+const lum = hex => { const n = parseInt(hex.slice(1),16);
+  return .2126*lin(n>>16&255) + .7152*lin(n>>8&255) + .0722*lin(n&255); };
+const cr = (a,b) => { const l1=lum(T[a]), l2=lum(T[b]), hi=Math.max(l1,l2), lo=Math.min(l1,l2);
+  return (hi+.05)/(lo+.05); };
+const cls = r => r>=7 ? 'pass-aaa' : r>=4.5 ? 'pass-aa' : r>=3 ? 'pass-lg' : 'fail';
+const label = r => r>=7 ? 'AAA' : r>=4.5 ? 'AA' : r>=3 ? 'lg' : '✗';
+
+/* ── Swatch scales ──────────────────────────────────────────────────────── */
+const USE = {
+  'ivory-1':'noise register','ivory-2':'transitional','ivory-3':'anchor — current brand','ivory-4':'resolving','ivory-5':'settled',
+  'ink-1':'dark chapter · once','ink-2':'primary text','ink-3':'secondary text','ink-4':'tertiary — text floor',
+  'ink-5':'never text · disabled','ink-6':'group boundary · bullet','ink-7':'in-group hairline','ink-8':'inset ground',
+  'honey-1':'mark background','honey-2':'dark grounds only','honey-3':'brand gold · fill only','honey-4':'≥24px text · icons',
+  'honey-5':'only body-text honey','honey-6':'AAA on honey-1',
+  'slate-1':'cold wash','slate-2':'structural only','slate-3':'large text · noise','slate-4':'text · noise','slate-5':'cold dark ground'
+};
+function scale(id, keys){
+  document.getElementById(id).innerHTML = keys.map(k=>{
+    const dark = lum(T[k]) < .35;
+    const ratio = cr(k,'ivory-3').toFixed(2);
+    return `<div class="sw${dark?' dark':''}" style="background:${T[k]}">
+      <div class="name">--${k}</div><div class="hex">${T[k]} · ${ratio} on ivory-3</div>
+      <div class="use">${USE[k]||''}</div></div>`;
+  }).join('');
+}
+scale('ivory-scale',['ivory-1','ivory-2','ivory-3','ivory-4','ivory-5','paper']);
+scale('ink-scale',['ink-1','ink-2','ink-3','ink-4','ink-5','ink-6','ink-7','ink-8']);
+scale('honey-scale',['honey-1','honey-2','honey-3','honey-4','honey-5','honey-6']);
+scale('slate-scale',['slate-1','slate-2','slate-3','slate-4','slate-5']);
+
+/* ── Contrast matrix, computed live ─────────────────────────────────────── */
+const BG = ['ivory-1','ivory-3','ivory-5','paper','honey-1','ink-1','slate-5'];
+const FG = ['ink-2','ink-3','ink-4','ink-5','honey-2','honey-3','honey-4','honey-5','honey-6','slate-3','slate-4','danger','ivory-3','paper'];
+document.getElementById('cmatrix').innerHTML =
+  '<tr><th>fg \\ bg</th>' + BG.map(b=>`<th>${b}</th>`).join('') + '</tr>' +
+  FG.map(f=>'<tr><td><code>'+f+'</code></td>' + BG.map(b=>{
+    if (f===b) return '<td class="num" style="color:#B9BEC1">—</td>';
+    const r = cr(f,b);
+    return `<td class="num ${cls(r)}">${r.toFixed(2)} ${label(r)}</td>`;
+  }).join('') + '</tr>').join('');
+
+/* ── Live px readout on the type ramp ───────────────────────────────────── */
+function readout(){
+  document.querySelectorAll('#ramp .ramp-row').forEach(row=>{
+    const spec = row.querySelector('.ramp-spec'), px = row.querySelector('.px');
+    if (spec && px) px.textContent = ' · ' + Math.round(parseFloat(getComputedStyle(spec).fontSize)) + 'px @ ' + window.innerWidth + 'w';
+  });
+}
+readout(); addEventListener('resize', readout);
+
+/* ── Spacing ruler ──────────────────────────────────────────────────────── */
+document.getElementById('ruler').innerHTML =
+  [4,8,12,16,20,24,32,40,48,64,80,96,128,160,192,256]
+  .map(v=>`<div data-v="${v}" style="width:${v}px;height:${Math.min(v,72)}px;margin-bottom:16px"></div>`).join('');
+
+/* ── Motion curves ──────────────────────────────────────────────────────── */
+const CURVES = [
+  ['--ease-settle','.16, 1, .30, 1',[.16,1,.30,1],620,'PRIMARY · all arrivals'],
+  ['--ease-shift','.32, .72, .20, 1',[.32,.72,.20,1],620,'positional change'],
+  ['--ease-reveal','.25, .60, .35, 1',[.25,.60,.35,1],620,'opacity · clip · mask'],
+  ['--ease-press','.30, 0, .20, 1',[.30,0,.20,1],90,'tactile feedback'],
+  ['--ease-exit','.55, 0, .85, .35',[.55,0,.85,.35],320,'dismissal'],
+  ['--ease-drive','linear',null,1100,'scrubbed only']
+];
+document.getElementById('curves').innerHTML = CURVES.map(([n,cb,p,d,use],i)=>{
+  const W=100,H=100;
+  const path = p ? `M0,${H} C${p[0]*W},${H-p[1]*H} ${p[2]*W},${H-p[3]*H} ${W},0` : `M0,${H} L${W},0`;
+  return `<div class="curve">
+    <h4>${n}</h4><div class="cb">cubic-bezier(${cb})</div>
+    <svg viewBox="-4 -4 108 108" width="100%" height="86" style="display:block">
+      <rect x="0" y="0" width="100" height="100" fill="#FAFBFB" stroke="#DFE2E4"/>
+      <line x1="0" y1="100" x2="100" y2="0" stroke="#DFE2E4" stroke-dasharray="2 3"/>
+      <path d="${path}" fill="none" stroke="#0B5FA5" stroke-width="2.2"/>
+    </svg>
+    <div style="font-family:ui-monospace,monospace;font-size:9px;color:#8B9398;margin-top:5px">${use} · ${d}ms</div>
+    <div class="track"><div class="puck" data-i="${i}"></div></div>
+  </div>`;
+}).join('');
+
+function play(){
+  document.querySelectorAll('.puck').forEach(p=>{
+    const [ , , , d] = CURVES[+p.dataset.i];
+    const ease = CURVES[+p.dataset.i][1]==='linear' ? 'linear' : `cubic-bezier(${CURVES[+p.dataset.i][1]})`;
+    p.style.transition='none'; p.style.transform='translateX(0)';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      p.style.transition = `transform ${d}ms ${ease}`;
+      p.style.transform = `translateX(${p.parentElement.clientWidth - 32}px)`;
+    }));
+  });
+}
+document.getElementById('playAll').addEventListener('click', play);
+document.querySelectorAll('.track').forEach(t=>t.addEventListener('click', play));
+setTimeout(play, 700);
+
+/* ── Duration scale ─────────────────────────────────────────────────────── */
+document.getElementById('durs').innerHTML =
+  [['--d-tap',90,'press'],['--d-quick',180,'hover · focus'],['--d-base',320,'component state'],
+   ['--d-settle',620,'element arrival'],['--d-long',1100,'section scale'],['--d-monument',2400,'wordmark · once']]
+  .map(([n,ms,use])=>`<div style="border:1px solid #DFE2E4;padding:9px 11px;min-width:118px">
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px">${ms}<span style="font-size:9px;font-weight:500">ms</span></div>
+    <div style="font-family:ui-monospace,monospace;font-size:9px;color:#0B5FA5;margin-top:2px">${n}</div>
+    <div style="font-size:10px;color:#8B9398">${use}</div></div>`).join('');
+
+/* ── Understructure ─────────────────────────────────────────────────────── */
+(function(){
+  const box = document.getElementById('under'), grid = box.querySelector('.grid');
+  let frame = 0, x = 0, y = 0;
+  const coarse = matchMedia('(pointer: coarse)').matches;
+  if (coarse || innerWidth < 1024){
+    box.querySelector('.cap').textContent = 'disabled — no fine pointer below 1024px (Rule 08.2)';
+    grid.style.display='none'; box.style.cursor='default'; return;
+  }
+  box.addEventListener('pointermove', e => {
+    const r = box.getBoundingClientRect();
+    x = e.clientX - r.left; y = e.clientY - r.top;
+    if (!frame) frame = requestAnimationFrame(()=>{
+      frame = 0; grid.style.setProperty('--ux', x+'px'); grid.style.setProperty('--uy', y+'px');
+    });
+  });
+  box.addEventListener('pointerleave', ()=>{
+    grid.style.setProperty('--ux','-999px'); grid.style.setProperty('--uy','-999px');
+  });
+})();
+</script>
+</body>
+</html>

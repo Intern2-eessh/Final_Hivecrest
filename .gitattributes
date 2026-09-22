@@ -1,0 +1,18 @@
+# Normalise line endings so Windows, macOS and Linux checkouts stay in sync.
+# Text files are stored with LF in the repository and checked out natively.
+* text=auto eol=lf
+
+# Binary assets must never be line-ending converted.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.mp4   binary
+*.webm  binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.pdf   binary

@@ -1,0 +1,1046 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HIVECREST — THE SETTLED STATE
+   Phase 1: the token layer.
+
+   Transcribed from docs/brand/tokens.md. Rule numbers in comments refer to
+   docs/brand/BRAND-BIBLE.md — read that before changing a value here.
+
+   Two naming layers exist on purpose:
+     · --color-*   registered with Tailwind, so `bg-ivory-3` / `text-ink-4`
+                   are real utilities.
+     · --ivory-3   the bare token name the brand bible uses, aliased below so
+                   hand-written CSS reads the same as the document.
+
+   The LEGACY block at the bottom of @theme keeps the current components
+   rendering while they are migrated section by section. It is deleted in the
+   phase that retires the last consumer, not before.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Ivory · surfaces ──────────────────────────────────────────────────
+     A temperature scale, not a brightness scale. Max ratio across the whole
+     range is 1.04 — each step is meant to be imperceptible on its own.
+     Warmth (R−B) climbs 2 → 6 → 11 → 19 → 22.
+     Rule 02.2: a section may never be cooler than the section above it. */
+  --color-ivory-1: #F6F6F4;   /* coldest — noise register only */
+  --color-ivory-2: #FAF9F4;   /* transitional */
+  --color-ivory-3: #FDFAF2;   /* anchor — the existing brand value */
+  --color-ivory-4: #FDF7EA;   /* resolving */
+  --color-ivory-5: #FCF6E6;   /* warmest — settled */
+  --color-paper:   #FFFFFF;   /* `Paper` material only. Never a full-width band (02.3) */
+
+  /* ── Chrome · the bar and the foot ─────────────────────────────────────
+     Not a sixth step on the ivory scale, and deliberately named apart from it.
+
+     The scale above is a *section* scale: 02.2 says a section may never be
+     cooler than the one above it, and 01's thesis is that the page warms as it
+     descends. The header and footer are not sections — they bracket the page
+     rather than sitting in it, and the header in particular sits ABOVE ivory-2,
+     which a sixth ivory step would read as a rule violation rather than as
+     chrome.
+
+     Warmth (R−B) is 29, against ivory-5's 22 and honey-1's 34. That is the
+     brief: warmer than the warmest ground, short of reading as gold. Honey is
+     a marking colour (02.7) and a full-width band of it would be the
+     "gold-as-theme drifts toward ceremonial" failure D-007 names.
+
+     Contrast, measured, on this ground: ink-4 5.35:1, ink-3 9.71:1, ink-2
+     15.28:1 — all clear AA, ink-3 and ink-2 clear AAA. Rule 02.12 wants the
+     pair in the matrix, so these belong in §02 of the bible when it is next
+     touched. */
+  --color-chrome:  #FBF3DE;
+
+  /* ── Ink · structure ───────────────────────────────────────────────────
+     Rule 02.4: text colour is a token, never an opacity. `text-ink-3`,
+     never `text-charcoal/65`.
+     Rule 02.5: exactly three text tiers — ink-2, ink-3, ink-4. */
+  --color-ink-1: #14110F;   /* `Ink` material ground. Once sitewide (06.3) */
+  --color-ink-2: #1C1917;   /* primary text · primary button ground · 2px structural edge */
+  --color-ink-3: #443E39;   /* secondary text · long-form body */
+  --color-ink-4: #6B625A;   /* tertiary text · labels · captions. THE TEXT FLOOR */
+  --color-ink-5: #9A9088;   /* never text. disabled foreground · large numerals */
+  --color-ink-6: #C8C0B5;   /* group-boundary hairline · hex bullet · understructure stroke */
+  --color-ink-7: #E3DCD1;   /* in-group hairline */
+  --color-ink-8: #F0EADF;   /* `Inset` material ground */
+
+  /* ── Honey · marking ───────────────────────────────────────────────────
+     Rule 02.8: gold is a fill, not an ink.
+     Rule 02.6: three honey marks per viewport, maximum.
+     Rule 02.7: honey may mark only — the single most important word or figure
+     on a screen · the active nav state · the focus ring · the hex bullet ·
+     a narrative resolution moment. Eyebrows, tags, index numbers and icon
+     tiles are demoted to ink. */
+  --color-honey-1: #FBF3D9;   /* mark background / wash */
+  --color-honey-2: #F5C242;   /* dark grounds only · focus ring on `Ink` */
+  --color-honey-3: #D4AF37;   /* brand gold. fills and marks. never text on light */
+  --color-honey-4: #A87C10;   /* text ≥24px and icons only (3.62, large-text AA) */
+  --color-honey-5: #8A6100;   /* the only honey permitted for body text (5.31 AA) */
+  --color-honey-6: #5E4200;   /* text on honey-1 where AAA is required (8.93) */
+
+  /* ── Slate · the unresolved ────────────────────────────────────────────
+     The one cold accent, so warmth has something to be warm against.
+     Rule 02.9: quarantined to the noise register. Never appears after the
+     narrative resolves. */
+  --color-slate-1: #E7EBEC;   /* cold wash */
+  --color-slate-2: #A8B5B9;   /* structural only */
+  --color-slate-3: #6B7C82;   /* large text and icons */
+  --color-slate-4: #47565C;   /* text */
+  --color-slate-5: #2C383D;   /* cold dark ground */
+
+  /* ── Semantic ──────────────────────────────────────────────────────────
+     Rule 02.10: success is honey. Resolution is what honey means, so a green
+     here would contradict the doctrine. Replaces raw red-400/red-600. */
+  --color-success:      #8A6100;   /* = honey-5 · 4.99 AA on success-wash */
+  --color-success-wash: #FBF3D9;   /* = honey-1 */
+  --color-danger:       #A6321F;   /* 6.50 AA on ivory-3 · 5.94 AA on wash */
+  --color-danger-wash:  #FBEDE9;
+
+  /* ── Motion curves ─────────────────────────────────────────────────────
+     Physics, not effects. --ease-settle is derived from the wordmark
+     letter-convergence that already had the right character. */
+  --ease-settle: cubic-bezier(0.16, 1, 0.30, 1);      /* PRIMARY. all arrivals */
+  --ease-shift:  cubic-bezier(0.32, 0.72, 0.20, 1);   /* positional change */
+  --ease-reveal: cubic-bezier(0.25, 0.60, 0.35, 1);   /* opacity, clip, mask */
+  --ease-press:  cubic-bezier(0.30, 0, 0.20, 1);      /* tactile feedback */
+  --ease-exit:   cubic-bezier(0.55, 0, 0.85, 0.35);   /* dismissal */
+  --ease-drive:  linear;                              /* scrubbed sequences only */
+
+  /* ── Breakpoints ───────────────────────────────────────────────────────
+     Set by the grid spec, not by Tailwind's defaults. Column counts:
+     4 below sm · 8 at sm · 12 at md and above.
+
+     `lg` was 1200px, which put a 300px band between the grid going to twelve
+     columns (900px) and the layout admitting it. Through 900–1199 an iPad
+     landscape got the full desktop grid while Founder's Desk and the contact
+     form stayed in their centred single-column mobile form and the nav stayed
+     a hamburger — and `Understructure.tsx` separately hardcoded 1024, which
+     matched no token at all and made a third band out of it. `lg` is now the
+     width at which the layout becomes a desktop layout, and every one of those
+     consumers lines up on it.
+
+     `wide` names the 1200px grid-density step that already existed as a bare
+     media query, so the literal and the token no longer disagree. */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-wide: 1200px;
+  --breakpoint-xl: 1440px;
+
+  /* The legacy compatibility block that used to sit here — --color-ivory,
+     --color-canvas, --color-charcoal and the honey-100/400/500/700 aliases —
+     has been deleted. It existed so unmigrated components kept rendering
+     during the migration; every one of them now consumes the tokens above
+     directly, so the duplicates are gone rather than left to rot. */
+}
+
+/* Face tokens resolve against the next/font variables set on <html>, so they
+   have to be inline.
+   Rule 03.1 — two voices, addressed by role and never by face name:
+     --font-display  structure — headings, labels, numerals, measurements
+     --font-text     reading   — body, paragraphs, form fields, buttons
+     --font-mono     reserved and unbound (03.3). Nothing depends on it. */
+@theme inline {
+  --font-display: var(--font-inter);
+  --font-text: var(--font-inter);
+  --font-sans: var(--font-inter);   /* legacy alias */
+}
+
+/* ── Global font application ────────────────────────────────────────────────
+   Explicitly apply DM Sans (mapped to --font-inter) as the base font for all
+   body text. Tailwind's @theme inline above wires --font-text and --font-sans
+   to the CSS variable, but the html/body elements also need a direct rule so
+   that elements which don't carry a font-* utility class inherit correctly. */
+html, body {
+  font-family: var(--font-inter, 'DM Sans', sans-serif);
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tokens that generate no utility class. Bare names as written in the bible.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Colour aliases — so hand-written CSS reads like the document */
+  --ivory-1: var(--color-ivory-1);
+  --ivory-2: var(--color-ivory-2);
+  --ivory-3: var(--color-ivory-3);
+  --ivory-4: var(--color-ivory-4);
+  --ivory-5: var(--color-ivory-5);
+  --chrome:  var(--color-chrome);
+  --paper:   var(--color-paper);
+  --ink-1: var(--color-ink-1);
+  --ink-2: var(--color-ink-2);
+  --ink-3: var(--color-ink-3);
+  --ink-4: var(--color-ink-4);
+  --ink-5: var(--color-ink-5);
+  --ink-6: var(--color-ink-6);
+  --ink-7: var(--color-ink-7);
+  --ink-8: var(--color-ink-8);
+  --honey-1: var(--color-honey-1);
+  --honey-2: var(--color-honey-2);
+  --honey-3: var(--color-honey-3);
+  --honey-4: var(--color-honey-4);
+  --honey-5: var(--color-honey-5);
+  --honey-6: var(--color-honey-6);
+  --slate-1: var(--color-slate-1);
+  --slate-2: var(--color-slate-2);
+  --slate-3: var(--color-slate-3);
+  --slate-4: var(--color-slate-4);
+  --slate-5: var(--color-slate-5);
+  --success: var(--color-success);
+  --success-wash: var(--color-success-wash);
+  --danger: var(--color-danger);
+  --danger-wash: var(--color-danger-wash);
+
+  /* ── Type ramp ───────────────────────────────────────────────────────────
+     Fluid between 380px and 1440px viewport. Rule 03.5 — two sizes adjacent
+     in a layout must be at least 2 ramp steps apart. */
+  --t-meta:     clamp(0.6875rem, 0.665rem + 0.09vw, 0.75rem);    /* 11 → 12 */
+  --t-caption:  clamp(0.8125rem, 0.79rem  + 0.09vw, 0.875rem);   /* 13 → 14 */
+  --t-body-s:   clamp(0.9375rem, 0.915rem + 0.09vw, 1rem);       /* 15 → 16 */
+  --t-body:     clamp(1rem,      0.955rem + 0.19vw, 1.125rem);   /* 16 → 18 */
+  --t-body-l:   clamp(1.125rem,  1.058rem + 0.28vw, 1.3125rem);  /* 18 → 21 */
+  --t-lead:     clamp(1.3125rem, 1.2rem   + 0.47vw, 1.625rem);   /* 21 → 26 */
+  --t-h4:       clamp(1.5rem,    1.366rem + 0.57vw, 1.875rem);   /* 24 → 30 */
+  --t-h3:       clamp(1.875rem,  1.65rem  + 0.94vw, 2.5rem);     /* 30 → 40 */
+  --t-h2:       clamp(2.5rem,    2.05rem  + 1.89vw, 3.75rem);    /* 40 → 60 */
+  /* Anchored 320 → 1440, not 380 → 1440 like the rest of the ramp. The floor
+     was 3.5rem, and because a clamp floor governs every width below its lower
+     anchor, 56px was the size at 320px too — in a 272px column. "Applications"
+     sets ~350px at 56px with no break opportunity in it, so `overflow-wrap:
+     break-word` split it mid-word: "Applicatio / ns". 40px is the largest size
+     that fits the longest unbreakable word on the narrowest supported screen. */
+  --t-h1:       clamp(2.5rem,    1.643rem + 4.286vw, 5.5rem);    /* 40 → 88 */
+  --t-monument: clamp(5rem,      3.21rem  + 7.55vw, 10rem);      /* 80 → 160 · 2 uses sitewide (03.4) */
+
+  /* Measure ceilings (03.9). A line longer than its ceiling is a layout error. */
+  --measure-body: 64ch;
+  --measure-lead: 48ch;
+  --measure-statement: 20ch;
+
+  /* ── Spacing · 4px base ──────────────────────────────────────────────────
+     Rule 04.5 — off-scale values are forbidden. The gaps in the sequence
+     (no 7, 9, 11, 13…) are the point: they are not available.
+     Rule 04.6 — space within a group is always ≥1 full step smaller than the
+     space around it. */
+  --s-1: 4px;    --s-2: 8px;    --s-3: 12px;   --s-4: 16px;
+  --s-5: 20px;   --s-6: 24px;   --s-8: 32px;   --s-10: 40px;
+  --s-12: 48px;  --s-16: 64px;  --s-20: 80px;  --s-24: 96px;
+  --s-32: 128px; --s-40: 160px; --s-48: 192px; --s-64: 256px;
+
+  /* ── Vertical rhythm · the decrescendo ───────────────────────────────────
+     Rule 04.7 — rhythm may only increase down the page. A section may hold or
+     open; it may never tighten relative to the section above it. Mobile
+     values here, desktop below. */
+  --rhythm-1: 64px;    /* noise     — dense, tight, uncomfortable */
+  --rhythm-2: 80px;    /* working   */
+  --rhythm-3: 104px;   /* resolving */
+  --rhythm-4: 128px;   /* settled   — quiet, nearly empty */
+
+  /* ── Grid ────────────────────────────────────────────────────────────────
+     Columns fluid; gutters and margins fixed per breakpoint. xs values here. */
+  --grid-cols: 4;
+  --grid-gutter: 16px;
+  --grid-margin: 24px;
+  /* Raised from 1280. At the old cap the whole page stopped growing on any
+     display wider than that, so on a large monitor the layout — the About
+     video most visibly — simply stopped responding while the window kept
+     getting bigger. */
+  --grid-max: 1560px;
+
+  /* ── Geometry · the cut corner ───────────────────────────────────────────
+     One corner, top-right, 30° from horizontal. h = w · tan(30°) = 0.5774w.
+     Rule 05.2 — the cut scales with the surface, not with the brand. */
+  --cut-1-w: 12px;  --cut-1-h: 7px;    /* tags, small controls, inline marks */
+  --cut-2-w: 18px;  --cut-2-h: 10px;   /* buttons, form fields, list rows */
+  --cut-3-w: 28px;  --cut-3-h: 16px;   /* panels, media frames, index rows */
+  --cut-4-w: 48px;  --cut-4-h: 28px;   /* large surfaces, feature frames */
+  --cut-5-w: 88px;  --cut-5-h: 51px;   /* full-bleed bands, chapter breaks */
+
+  /* Hairlines (05.6). Weight carries meaning — these are not interchangeable.
+     Rule 05.7 — rules run to the grid, not to the content. */
+  --line-hair:   var(--ink-7);   /* 1px · separation within a group */
+  --line-bound:  var(--ink-6);   /* 1px · boundary between groups */
+  --line-struct: var(--ink-2);   /* 2px · structural edge, chapter-level */
+
+  /* Hex bullet (05.8) — the only list marker in the system */
+  --bullet-s: 8px;
+  --bullet-m: 10px;
+  --bullet-l: 14px;
+
+  /* ── Motion durations ────────────────────────────────────────────────────
+     Rule 07.1 — distance sets duration. A 4px move takes --d-quick; a 200px
+     move takes --d-settle. */
+  --d-tap: 90ms;
+  --d-quick: 180ms;
+  --d-base: 320ms;
+  --d-settle: 620ms;
+  --d-long: 1100ms;
+  --d-monument: 2400ms;   /* the wordmark. once per session */
+
+  /* ── Interaction · the understructure ────────────────────────────────────
+     Geometry only. Pointer position is no longer a custom property: it is
+     written as a `transform` directly on the two layers by the understructure
+     component, because a per-frame custom-property write on `:root`
+     invalidates inherited values document-wide. Disabled below `lg` (1024px)
+     and on coarse pointers (08.2). */
+  /* The fixed header's height (`h-20`). Named here because three separate
+     things have to agree on it: the bar itself, the `scroll-margin-top` that
+     keeps section anchors clear of it, and SmoothScroll's Lenis offset. */
+  --header-h: 80px;
+
+  --under-radius: 260px;
+  --under-opacity: 0.09;
+  --under-cell-w: 84px;
+  --under-cell-h: 150px;
+}
+
+/* Desktop rhythm and grid. Breakpoints match --breakpoint-* above; they are
+   written literally because custom properties cannot be used in media queries. */
+@media (min-width: 640px) {
+  :root { --grid-cols: 8; --grid-gutter: 24px; --grid-margin: 32px; }
+}
+@media (min-width: 900px) {
+  :root {
+    --grid-cols: 12; --grid-gutter: 24px; --grid-margin: 48px;
+    /* Tightened from 96/128/176/240. The scale still only ever opens down the
+       page (Rule 04.7) and the decrescendo is intact — the whole ramp just
+       sits lower, because at the old values the gaps between sections, and
+       especially between the contact form and the footer, read as the page
+       having run out rather than as deliberate quiet. */
+    --rhythm-1: 80px;
+    --rhythm-2: 96px;
+    --rhythm-3: 120px;
+    --rhythm-4: 144px;
+  }
+}
+/* --breakpoint-wide. A density step, not a layout breakpoint: nothing changes
+   shape here, the gutters and margins just open up. */
+@media (min-width: 1200px) {
+  :root { --grid-gutter: 32px; --grid-margin: 64px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Base
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html, body {
+  background: var(--ivory-3);
+  color: var(--ink-2);
+  margin: 0;
+  padding: 0;
+  /* A backstop against sideways scroll on small screens. `clip` rather than
+     `hidden` on purpose: `hidden` would turn the body into a scroll container
+     and silently break `position: sticky` anywhere on the page. This is a
+     safety net, not a licence — anything that actually overflows still gets
+     fixed at the source. */
+  overflow-x: clip;
+}
+
+/* Long unbroken strings — an email address, a URL — must not be able to push
+   the layout wider than the screen. */
+body {
+  overflow-wrap: break-word;
+}
+
+/* Reserve the scrollbar track always, so locking scroll for an overlay does
+   not shift the page sideways when the scrollbar disappears.
+   scroll-lock.ts still depends on this for any future overlay; the mobile menu
+   is the only full-screen layer left now that the solutions modal is gone. */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* The header is `fixed … h-20`, so anything scrolled to its own top lands with
+   its first 80px behind the bar.
+
+   `SmoothScroll` passes an offset to Lenis, but Lenis is only one of the ways a
+   section gets scrolled to. A client-side `<Link href="/#solution">` from
+   another route is handled by the Next router before SmoothScroll's deep-link
+   effect ever sees it; a native hash jump, `scrollIntoView()` and browser
+   find-in-page are three more. Each of those landed the section flush under the
+   header while the Lenis path landed it correctly, so the same link behaved
+   differently depending on where it was clicked from.
+   `scroll-margin-top` is honoured by every one of them, which makes it the only
+   place this belongs. */
+#about,
+#vision,
+#achievements,
+#solution,
+#founders,
+#contact {
+  scroll-margin-top: var(--header-h);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--honey-3) var(--ink-8);
+}
+
+/* `.bg-clip-text` was removed here. It existed only to paint a gradient into
+   the wordmark's letterforms, which Rule 02.13 bans, and it was a hand-written
+   duplicate of a utility Tailwind already ships. */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Type ramp
+   Rule 03.6 — the weight whitelist. Space Grotesk at 500 and 700, Inter at
+   400 and 600. Any other weight is forbidden, which is why each class states
+   its weight rather than inheriting one.
+   Rule 03.11 — tracking is bound to size, never set by eye.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer components {
+  .t-meta, .t-caption, .t-body-s, .t-body, .t-body-l, .t-lead,
+  .t-h4, .t-h3, .t-h2, .t-h1, .t-monument { margin: 0; }
+
+  /* Rule 03.7 — the label style is the only place uppercase is permitted.
+     Rule 03.8 — labels are not chips. Bare text, preceded by a 24px hairline
+     rule in ink-6. Never honey. */
+  .t-meta {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: var(--t-meta); letter-spacing: 0.18em; line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .t-caption {
+    font-family: var(--font-text); font-weight: 400;
+    font-size: var(--t-caption); letter-spacing: 0; line-height: 1.5;
+  }
+  .t-body-s {
+    font-family: var(--font-text); font-weight: 400;
+    font-size: var(--t-body-s); letter-spacing: 0; line-height: 1.6;
+  }
+  .t-body {
+    font-family: var(--font-text); font-weight: 400;
+    font-size: var(--t-body); letter-spacing: 0; line-height: 1.65;
+  }
+  .t-body-l {
+    font-family: var(--font-text); font-weight: 400;
+    font-size: var(--t-body-l); letter-spacing: -0.005em; line-height: 1.6;
+  }
+  .t-lead {
+    font-family: var(--font-text); font-weight: 400;
+    font-size: var(--t-lead); letter-spacing: -0.01em; line-height: 1.5;
+  }
+  .t-h4 {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: var(--t-h4); letter-spacing: -0.015em; line-height: 1.25;
+  }
+  .t-h3 {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: var(--t-h3); letter-spacing: -0.02em; line-height: 1.15;
+  }
+  .t-h2 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: var(--t-h2); letter-spacing: -0.025em; line-height: 1.05;
+  }
+  .t-h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: var(--t-h1); letter-spacing: -0.03em; line-height: 0.98;
+  }
+  .t-monument {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: var(--t-monument); letter-spacing: -0.04em; line-height: 0.92;
+  }
+
+  /* Rule 03.2 — numerals are architecture. Tabular wherever numbers stack. */
+  .t-numeral { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+  .measure-body      { max-width: var(--measure-body); }
+  .measure-lead      { max-width: var(--measure-lead); }
+  .measure-statement { max-width: var(--measure-statement); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Composition — the half-offset comb grid
+   Law 5 — nothing is centered unless it is a monument. Content never floats
+   in the middle of the page; it takes a named seat, and the seat changes
+   between sections so the page reads as a brick rag rather than a stack.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.grid-page {
+  position: relative;
+  z-index: 10;   /* content sits above the understructure layer */
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+  width: 100%;
+  max-width: calc(var(--grid-max) + var(--grid-margin) * 2);
+  margin-inline: auto;
+  padding-inline: var(--grid-margin);
+}
+
+/* The same measure and margin as `.grid-page`, without the grid — for the two
+   full-bleed layers that have to line up with page content but are not laid out
+   on the columns: the fixed header and the centred hero.
+   Both used a hand-written `px-6 md:px-12`, which agreed with `--grid-margin`
+   at some widths and not others (8px out at 640–899, 16px at 1200–1687) and
+   diverged without limit past 1688px, where `.grid-page` stops growing and
+   centres but a full-bleed row does not. On a 2560px display the logo sat 450px
+   left of the copy it is supposed to align with.
+
+   In `@layer components` so a utility can still override any part of it —
+   the mistake this file has now made four times is putting a component class
+   where a utility cannot reach it. */
+@layer components {
+  .measure-page {
+    width: 100%;
+    max-width: calc(var(--grid-max) + var(--grid-margin) * 2);
+    margin-inline: auto;
+    padding-inline: var(--grid-margin);
+  }
+}
+
+/* Rule 04.4 — mobile does not collapse to a stack of centered blocks. Below
+   md each seat keeps a left indent inherited from its desktop position, so
+   the rag survives the breakpoint instead of flattening.
+
+   Every rule in this block is UNLAYERED, and Tailwind's column utilities are
+   in `@layer utilities`. Unlayered author styles win over every named layer,
+   so `class="seat-anchor md:col-span-6"` is not a seat plus an override — the
+   `md:col-span-6` is dead on arrival. Anything that needs a grid column gets a
+   seat here; nothing places itself with `md:col-start-*` next to a seat class. */
+.seat-anchor, .seat-inset, .seat-offset, .seat-full, .seat-monument,
+.seat-counter, .seat-index {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+@media (min-width: 640px) and (max-width: 899px) {
+  .seat-inset  { grid-column: 2 / -1; }
+  .seat-offset { grid-column: 3 / -1; }
+}
+
+/* Rule 04.1 — consecutive sections may not share a seat.
+   Rule 04.2 — adjacent seats differ by at least 2 columns of displacement.
+
+   ── `inset` and `offset` are OPENER seats. They may not carry reading copy. ──
+
+   Both start part-way across the grid: `inset` at column 3, `offset` at
+   column 6. That displacement is the whole point of them — §13.2 uses an
+   `offset` opener as a counterweight *above full-width content*, so the eye
+   is pulled right and then released left into the thing being introduced.
+   It only works on a short block: an eyebrow, a heading, a line of lead.
+
+   Applied to a paragraph, a list or a whole document it stops being a
+   counterweight and becomes a hole. Measured at 1440px, a `seat-offset` block
+   starts at x=620 while every `seat-anchor`, `seat-full` and `h1` on the same
+   page starts at x=64 — a 556px empty column running the full height of the
+   content, with nothing on the page to justify it. That was the state of
+   `/privacy`, `/terms`, `/about` and every service page: the entire body of
+   each one sat in the right half of the screen.
+
+   Reading copy goes on `seat-anchor`. A text column's line length is already
+   controlled by `--measure-body` / `--measure-lead` (64ch / 48ch), so the
+   indent was never buying legibility — `seat-anchor` is 752px against
+   `seat-offset`'s 746px, meaning the measure is unchanged and only the
+   position moves. Compositional variety comes from how far a block extends
+   *right* (anchor 1–7 vs full 1–12), not from where it starts on the left.
+   One left edge per page. */
+@media (min-width: 900px) {
+  .seat-anchor   { grid-column: 1 / 8; }    /* cols 1–7  · the default */
+  .seat-inset    { grid-column: 3 / 10; }   /* cols 3–9  · SHORT OPENERS ONLY */
+  .seat-offset   { grid-column: 6 / 13; }   /* cols 6–12 · SHORT OPENERS ONLY */
+  .seat-full     { grid-column: 1 / -1; }   /* structural sections only */
+  /* Archetype B (§13.2) — the media counterweight opposite a `seat-anchor`
+     copy block. The bible writes this seat as 9–12, which assumes the copy
+     stops at column 6; `seat-anchor` is 1–7, so 8–12 is what actually butts
+     the two blocks up against a single gutter and keeps the frame the width
+     it has today. Narrow it to `9 / -1` if the pair wants a full empty
+     column between them — the only thing that changes is the video's width. */
+  .seat-counter  { grid-column: 8 / -1; }   /* cols 8–12 · media opposite `anchor` */
+  /* cols 1–2 · the running count in the left margin of a `seat-inset` opener.
+     A seat rather than `md:col-start-1 md:col-span-2`, so the placement holds
+     at every width — the utility pair says nothing below 900px, which is the
+     bug this file warns about directly above. */
+  .seat-index    { grid-column: 1 / 3; }
+  /* Rule 04.3 — centering costs a budget token. Two uses sitewide. */
+  .seat-monument { grid-column: 3 / 11; text-align: center; }
+}
+
+/* Rule 04.7 — vertical rhythm may only increase down the page. A section may
+   hold or open; it may never tighten relative to the section above it. This
+   replaces the uniform `py-14 md:py-20` that was on every section, so density
+   itself carries the decrescendo.
+
+   In `@layer components`, for the same reason as `.tap` and `.btn` below.
+   Unlayered, `padding-block` beat every Tailwind padding utility — and in
+   `horizontal-tb` `padding-block-start` and `padding-top` are one property, so
+   `class="rhythm-1 pt-32 md:pt-40"` on the two page-opening sections was not a
+   rhythm plus a header offset: the `pt-*` was dead on arrival and the section
+   kept the 64/80px rhythm padding. `SiteHeader` is `fixed` and 80px tall, so
+   the eyebrow and h1 on every inner page rendered underneath it. Layered, the
+   utility wins for `padding-top` and the rhythm token still supplies
+   `padding-block-end`, which is what the markup always claimed to do. */
+@layer components {
+  .rhythm-1 { padding-block: var(--rhythm-1); }
+  .rhythm-2 { padding-block: var(--rhythm-2); }
+  .rhythm-3 { padding-block: var(--rhythm-3); }
+  .rhythm-4 { padding-block: var(--rhythm-4); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Geometry
+   Rule 05.1 — the cut replaces border-radius. Radius is 0 everywhere.
+   Rule 05.5 — one cut per surface. A cut child inside a cut container at the
+   same corner produces a stepped, ragged edge; the child stays a rectangle.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.cut-1, .cut-2, .cut-3, .cut-4, .cut-5 {
+  border-radius: 0;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cut-w)) 0,
+    100% var(--cut-h),
+    100% 100%,
+    0 100%
+  );
+}
+.cut-1 { --cut-w: var(--cut-1-w); --cut-h: var(--cut-1-h); }
+.cut-2 { --cut-w: var(--cut-2-w); --cut-h: var(--cut-2-h); }
+.cut-3 { --cut-w: var(--cut-3-w); --cut-h: var(--cut-3-h); }
+.cut-4 { --cut-w: var(--cut-4-w); --cut-h: var(--cut-4-h); }
+.cut-5 { --cut-w: var(--cut-5-w); --cut-h: var(--cut-5-h); }
+
+/* Rule 05.4 — clip-path removes box-shadow. Elevation goes on a wrapper as a
+   filter, never on the clipped element itself. This is the silent bug the
+   bible calls out, so the only sanctioned elevation lives here. */
+.elevate {
+  filter:
+    drop-shadow(0 1px 2px rgba(28, 25, 23, 0.05))
+    drop-shadow(0 12px 28px rgba(28, 25, 23, 0.09));
+}
+
+/* Rule 05.8 — the hex bullet. The only list marker in the system: no discs,
+   dashes, chevrons or check marks. ink-6 by default; honey-3 only when this
+   bullet is spending one of the three permitted viewport marks. */
+.hex-bullet {
+  display: inline-block;
+  flex: none;
+  width: var(--bullet-m);
+  aspect-ratio: 1;
+  background: var(--ink-6);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.hex-bullet-s { width: var(--bullet-s); }
+.hex-bullet-l { width: var(--bullet-l); }
+
+/* The wordmark's depth stage.
+ *
+ * `perspective` on the element whose DIRECT children are the letters, because
+ * that is the only place it applies. The letters then converge through depth
+ * rather than sliding on a flat plane — the same 2.4s monument event, given
+ * the third dimension it was always describing.
+ *
+ * This is the only 3D in the system, and it is deliberately not WebGL. A
+ * `rotateX`/`translateZ` pair is a compositor transform: the GPU already
+ * handles it, there is no render loop, no context, no library, and it cannot
+ * drop a frame the way a canvas can. Three.js would have cost 84.8KB gzipped —
+ * larger than the biggest chunk this site ships — to do less than this.
+ *
+ * `perspective-origin` sits above centre so the letters arrive from slightly
+ * overhead. Dead centre reads as a camera on rails; this reads as looking at
+ * something set down in front of you.
+ *
+ * Rule 07.3 is not engaged: nothing loops, nothing overshoots, and the pairing
+ * of opacity with travel here is the documented once-per-session monument
+ * exception that the convergence already claimed. */
+.hero-stage {
+  perspective: 1400px;
+  perspective-origin: 50% 38%;
+}
+
+/* The same stage, for the Solutions rows. A longer focal length than the
+   wordmark's: the media is much larger on screen, and at 1400px the near edge
+   of a 620px-wide image distorts enough to read as a fisheye rather than a
+   turn. Depth should be felt and not noticed. */
+.depth-stage {
+  perspective: 2400px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Surface materials
+   Rule 06.1 — `Line` is the default. `Paper` must be earned: it is only
+   correct when the surface sits at a different hierarchy level from what
+   surrounds it, not as default packaging.
+   Rule 06.2 — one elevation level per screen. Paper may not contain Paper.
+   Rule 06.3 — `Ink` appears exactly once in the site. It is the chapter break.
+   Rule 06.5 — surfaces are opaque. No slash-opacity backgrounds, no
+   backdrop-filter. The sole exception is a full-screen modal scrim.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.m-line {
+  background: transparent;
+  border: 1px solid var(--line-bound);
+  border-radius: 0;
+}
+.m-paper {
+  background: var(--paper);
+  border: 0;
+  border-radius: 0;
+}
+.m-inset {
+  background: var(--ink-8);
+  border: 0;
+  border-radius: 0;
+}
+.m-ink {
+  background: var(--ink-1);
+  color: var(--ivory-3);
+  border: 0;
+  border-radius: 0;
+}
+
+/* Inside the Ink chapter the scale inverts. The same three text tiers apply
+   (Rule 02.5) — they are just measured against `ink-1` instead of ivory, so
+   the tokens are remapped here rather than restated in the component. Every
+   pair below is in the §02 matrix: ivory-3 18.03, ink-7 ~15, ink-6 ~11,
+   honey-2 11.35 — all AAA. */
+.m-ink .text-ink-2 { color: var(--ivory-3); }
+.m-ink .text-ink-3 { color: var(--ink-7); }
+.m-ink .text-ink-4 { color: var(--ink-6); }
+.m-ink .text-honey-5 { color: var(--honey-2); }
+.m-ink .border-ink-6,
+.m-ink .border-ink-7,
+.m-ink .m-line { border-color: var(--ink-4); }
+.m-ink .bg-ink-6,
+.m-ink .bg-ink-7,
+.m-ink .hex-bullet { background: var(--ink-5); }
+.m-ink .index-numeral { color: var(--ink-4); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Interaction
+   Rule 08.7 — focus is designed, not defaulted. The ring is honey, and it is
+   one of the five things honey is permitted to mark.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* The understructure — the pointer-revealed hex grid beneath the page.
+   Rule 08.1 — it composites on its own layer and never repaints content.
+   Rule 08.3 — it reveals rather than attracts. 0.09 peak opacity.
+   Rule 02.13 — the falloff gradient is one of the two sanctioned exceptions to
+   the no-gradients rule, because it is a mask and never renders as colour.
+
+   Built as three nested layers rather than one, because the single-layer
+   version was the most expensive thing on the site. It painted a viewport-sized
+   fixed element whose `mask-image` radial gradient was re-evaluated every
+   pointer frame from `--ux`/`--uy` written on `:root`. Two costs compounded:
+   writing a custom property on the root element invalidates inherited values
+   document-wide, so every frame began with a whole-document style recalc; and
+   `mask-image` is not a compositor property, so every frame also re-rastered
+   the full viewport. Measured on a 4x-throttled profile that was a 63-186ms
+   long task on *every single frame the mouse moved* — a page that locks up
+   whenever the pointer is in motion.
+
+   Now: `.understructure` is a static clip box that never changes. `-window`
+   carries a fixed radial mask and is moved to the pointer with `transform`.
+   `-grid` carries the tiled hex and is moved by the exact inverse, so the grid
+   stays anchored to the viewport (Rule 08.4 — it must not read as a follower)
+   while the window slides over it. Both moving layers change nothing but
+   `transform`, which the compositor handles without style, layout or paint. */
+.understructure {
+  position: fixed;
+  inset: 0;
+  /* Above the section grounds so it is visible through them, below the content
+     layer (`.grid-page`, z-10) so it never sits on top of type. */
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  /* Nothing inside can affect anything outside it, so the style/layout/paint
+     invalidation this layer produces stops at its own box. */
+  contain: strict;
+}
+
+.understructure-window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--under-radius) * 2);
+  height: calc(var(--under-radius) * 2);
+  opacity: var(--under-opacity);
+  /* Fixed at the element's own centre — no custom properties, so it is
+     rasterised once and never recomputed. */
+  mask-image: radial-gradient(
+    circle closest-side at 50% 50%,
+    #000 0%,
+    #000 30%,
+    transparent 72%
+  );
+  /* Opacity transitions; position never does. A lagging grid would read as a
+     cursor follower, which Rule 08.4 rules out. */
+  transition: opacity var(--d-base) var(--ease-reveal);
+  will-change: transform;
+}
+
+.understructure-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50V17L28 1l28 16v33z' fill='none' stroke='%23C8C0B5' stroke-width='1'/%3E%3Cpath d='M28 100L0 84V51l28-16 28 16v33z' fill='none' stroke='%23C8C0B5' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: var(--under-cell-w) var(--under-cell-h);
+  will-change: transform;
+}
+
+/* Hover treatments are per-section, not shared.
+ *
+ * A single `.card-mark` used to cover every card on the site, which made all
+ * of them behave identically — the same uniformity problem, moved from layout
+ * into interaction. Rule 08.6 still constrains what any of them may do (value,
+ * never position: no lift, no scale, no shadow bloom), but within that each
+ * archetype gets its own voice. `card-edge` below is the Vision/Mission pair;
+ * `card-rule` is the Achievements strip.
+ */
+
+/* Vision & Mission card hover. A honey rule wipes across the top edge and the
+   icon tile inverts to ink. Rule 02.7 permits this honey: the rule marks the
+   one card the pointer has resolved on, and only one can be hovered at a time,
+   so the three-marks-per-viewport budget holds.
+
+   The rule is a scaleX transform on a pseudo-element rather than a width
+   animation, so it composites instead of triggering layout on every frame. */
+.card-edge {
+  position: relative;
+  transition:
+    background-color var(--d-quick) var(--ease-reveal),
+    border-color     var(--d-quick) var(--ease-reveal);
+}
+.card-edge::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--honey-3);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--d-base) var(--ease-shift);
+  pointer-events: none;
+}
+.card-edge:hover::after,
+.card-edge:focus-within::after { transform: scaleX(1); }
+.card-edge:hover,
+.card-edge:focus-within { background-color: var(--ivory-1); border-color: var(--ink-4); }
+
+.card-edge-tile {
+  transition:
+    background-color var(--d-base) var(--ease-reveal),
+    color            var(--d-base) var(--ease-reveal);
+}
+.card-edge:hover .card-edge-tile,
+.card-edge:focus-within .card-edge-tile {
+  background: var(--ink-2);
+  color: var(--ivory-3);
+}
+
+/* Achievements hover — a different identity again. No ground change at all:
+   a 2px structural edge draws down the left of the card and the index numeral
+   promotes from ink-5 to ink-2. Quieter than the Vision cards on purpose,
+   because a credential is a fact rather than an invitation. */
+.card-rule { position: relative; }
+.card-rule::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: var(--ink-2);
+  transform: scaleY(0);
+  transform-origin: center top;
+  transition: transform var(--d-base) var(--ease-shift);
+}
+.card-rule:hover::before,
+.card-rule:focus-within::before { transform: scaleY(1); }
+.card-rule .index-numeral { transition: color var(--d-base) var(--ease-reveal); }
+.card-rule:hover .index-numeral,
+.card-rule:focus-within .index-numeral { color: var(--ink-2); }
+
+/* Rule 08.6 — hover changes value, not position. `hover:-translate-y-1.5`
+   paired with a heavier shadow is the pattern this replaces: it moves the
+   thing the user is aiming at, and it changes two properties to say one thing.
+   Only the ground moves, and only by one ink step. */
+.state {
+  transition:
+    background-color var(--d-quick) var(--ease-reveal),
+    border-color     var(--d-quick) var(--ease-reveal),
+    color            var(--d-quick) var(--ease-reveal);
+}
+.state:active {
+  transition-duration: var(--d-tap);
+  transition-timing-function: var(--ease-press);
+}
+
+/* Rule 08.8 — the target floor is 44 x 44px, and it applies to inline links in
+   dense text too: they get vertical padding to reach it rather than an
+   exemption. Applied as a class so the padding is visible in the markup
+   instead of hidden in a global reset.
+
+   In `@layer components`, unlike most of this file, because `.tap` sets
+   `display` and every Tailwind display utility lives in `@layer utilities`.
+   Unlayered, `.tap` outranked the whole utilities layer, so the header's
+   `class="tap lg:hidden"` hamburger stayed `inline-flex` at every width and
+   sat next to the full desktop nav it is supposed to replace. Layering it
+   lets `lg:hidden` — and any other display utility — win, which is the only
+   sane relationship between a component class and a utility. */
+@layer components {
+  .tap {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    /* The floor above says 44 x 44 and only half of it was here. An icon-only
+       control — the header hamburger, which is the entire navigation on every
+       viewport below `lg` — is 24px wide, so it met the height and missed the
+       width by 20px. */
+    min-width: 44px;
+  }
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--honey-5);
+  outline-offset: 3px;
+}
+.m-ink :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline-color: var(--honey-2);
+}
+
+/* Rule 07.7 — reduced motion renders the settled end state. Not a shortened
+   animation and not a cross-fade: the final frame, immediately. This is free
+   here because every sequence in the system resolves *to* a settled state, so
+   the still frame is the correct composition by definition. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Primitives
+   Geometry and material only. The full component catalogue — anatomy, the
+   three button tiers, sizing, loading and error states — is bible §12, still
+   to be written. These exist so the Phase 2 conversion is not thirty copies
+   of the same class string, and they are expected to be replaced wholesale.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Layered for the same reason as `.tap`: `.btn` sets `display`, and unlayered
+   it outranked `@layer utilities`, so the header CTA's own `hidden` never
+   applied and the button rendered from 900px up instead of from 1200px. The
+   tier classes below (`.btn-primary` / `.btn-secondary`) set no `display` and
+   stay unlayered. */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    min-height: 44px;              /* Rule 08.8 — the target floor */
+    padding: var(--s-3) var(--s-8);
+    border: 0;
+    font-family: var(--font-text);
+    font-weight: 600;            /* Rule 03.6 — Inter 600 is the button weight */
+    font-size: var(--t-body-s);
+    line-height: 1;
+    cursor: pointer;
+    text-align: center;
+  }
+}
+.btn:disabled { color: var(--ink-5); background: none; cursor: not-allowed; }
+
+/* Button hover.
+ *
+ * `background: ink-2 -> ink-1` was the whole of the primary button's hover:
+ * #1C1917 to #14110F, a contrast ratio of 1.11 between the two states. That is
+ * not a subtle affordance, it is an invisible one — the control gave no reply
+ * at all to being pointed at. The secondary was the same story against ink-8.
+ *
+ * Both now answer in the one channel Rule 08.6 allows — value, never position.
+ * No lift, no scale, no shadow bloom.
+ *
+ * PRIMARY keeps its ink ground and turns its label honey. Rule 02.8: on ink-1,
+ * honey-2 measures 11.35:1 and is unrestricted, so this is the one place the
+ * gold can be spent at full strength without touching a text-contrast floor.
+ * The honey budget (02.6, three marks per viewport) holds because a pointer
+ * resolves on exactly one control at a time.
+ *
+ * SECONDARY inverts outright: the outline fills with ink and the label goes
+ * ivory. It is the largest value change available without introducing a colour,
+ * and it reads instantly at any size. */
+.btn-primary { background: var(--ink-2); color: var(--ivory-3); }
+.btn-primary:hover:not(:disabled) { background: var(--ink-1); color: var(--honey-2); }
+.btn-primary:active:not(:disabled) { background: #000; color: var(--honey-2); }
+
+.btn-secondary { background: transparent; color: var(--ink-2); border: 1px solid var(--line-bound); }
+.btn-secondary:hover:not(:disabled) {
+  background: var(--ink-2);
+  border-color: var(--ink-2);
+  color: var(--ivory-3);
+}
+.btn-secondary:active:not(:disabled) { background: var(--ink-1); border-color: var(--ink-1); }
+
+/* Rule 03.8 / 02.7 — tags are ink, not honey pills. They were never on the
+   list of five things honey is allowed to mark. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--t-meta);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  background: var(--ink-8);
+  padding: var(--s-1) var(--s-3);
+}
+
+.field {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--s-3) var(--s-4);
+  background: var(--paper);
+  border: 1px solid var(--line-bound);
+  font-family: var(--font-text);
+  /* Not `--t-body-s`. That clamp only reaches 16px at a 1511px viewport, so on
+     every phone and tablet these five fields were under 16px — the threshold
+     below which iOS Safari zooms the page in on focus and does not zoom back
+     out on blur. A form control is the one place the ramp does not get to
+     decide; `max()` keeps the ramp's intent above 16px and puts a hard floor
+     under it. */
+  font-size: max(16px, var(--t-body-s));
+  color: var(--ink-2);
+}
+.field::placeholder { color: var(--ink-5); }
+.field[aria-invalid="true"] { border-color: var(--danger); }
+
+/* Rule 03.2 — numerals are architecture; Rule 02.7 / D-008 — index numbers are
+   demoted from honey to ink. They mark position, not importance. */
+.index-numeral {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--ink-5);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LEGACY utilities · being retired
+   Kept only so unmigrated components keep rendering. Each is removed in the
+   phase that migrates its last consumer.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* `.card-surface` — the class whose own comment called it "the one surface
+   treatment sitewide" — was deleted here once its last consumer moved onto the
+   materials system (§06). That uniformity was the diagnosis the whole redesign
+   started from.
+
+   `.honeycomb-texture` and `.honey-underline` were removed here — the first by
+   Rule 05.9 (the comb is a structure, never a texture; it now lives in the
+   understructure above), the second by Rule 02.13 (colour is flat, and a
+   gradient marker underline is exactly the decoration that rule exists to
+   stop). Both had no remaining consumers when they were deleted. */
+
+/* Lenis full-page scroll compatibility */
+html.lenis, html.lenis-smooth {
+  height: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}

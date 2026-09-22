@@ -1,0 +1,7 @@
+# Cloudflare static-assets redirect rules. Relative paths only — a
+# host-based rule fails deploy validation (error 100324); the www-to-apex
+# redirect lives in a dashboard Redirect Rule instead.
+#
+# The AI Tel-Calling page became the CRM Platform page when the company
+# brochure renamed the product, so the old URL forwards permanently.
+/services/ai-tele-calling /services/crm-platform 301

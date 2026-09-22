@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hivecrest",
+  "compatibility_date": "2026-07-29",
+  // Static-assets-only Worker: there is no `main` script, because `next build`
+  // with `output: "export"` produces a plain HTML/CSS/JS site in `out/`.
+  // This file's presence also stops `wrangler deploy` from auto-migrating the
+  // project to the OpenNext adapter, which needs a standalone server build.
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}
