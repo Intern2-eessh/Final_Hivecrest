@@ -119,12 +119,12 @@ export default function OurAchievements() {
           {achievements.map((item) => (
             <div
               key={item.index}
-              className="relative rounded-[2rem] p-8 md:p-10 flex flex-col items-start h-full bg-white/40 backdrop-blur-xl border border-white/70 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:bg-white/50 hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-all duration-300"
+              className="relative rounded-[2rem] p-8 md:p-10 flex flex-col items-start h-full bg-white/40 backdrop-blur-xl border border-white/70 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:bg-white/50 hover:shadow-[0_12px_32px_rgba(0,0,0,0.1)] transition-all duration-300 group"
             >
               {/* Rule 02.7 / D-008 — index numbers mark position, not
                   importance, so they are ink. Rule 03.2 — numerals are set in
                   the display face with tabular figures. */}
-              <span className="index-numeral absolute top-6 right-8 t-h4 text-ink-5/50 font-bold">
+              <span className="index-numeral absolute top-6 right-8 t-h4 text-ink-5/50 font-bold transition-all duration-500 ease-out group-hover:text-honey-5/60 group-hover:-translate-y-1">
                 {item.index}
               </span>
 
@@ -137,15 +137,15 @@ export default function OurAchievements() {
                   alt={item.title}
                   width={item.logoW}
                   height={item.logoH}
-                  className="max-h-full max-w-full w-auto object-contain"
+                  className="max-h-full max-w-full w-auto object-contain transition-all duration-500 ease-out group-hover:scale-110 group-hover:drop-shadow-lg group-hover:brightness-105"
                 />
               </div>
 
-              <span className="w-fit px-4 py-1.5 mb-4 rounded-full bg-white/60 backdrop-blur-md text-xs font-bold text-ink-3 shadow-sm border border-white/80">
+              <span className="w-fit px-4 py-1.5 mb-4 rounded-full bg-white/60 backdrop-blur-md text-xs font-bold text-ink-3 shadow-sm border border-white/80 transition-all duration-500 ease-out group-hover:bg-honey-1 group-hover:text-honey-6 group-hover:border-honey-3/30 group-hover:-translate-y-1">
                 {item.meta}
               </span>
-              <h3 className="t-h4 text-ink-2 mb-3">{item.title}</h3>
-              <p className="t-body-s text-ink-3 measure-body">
+              <h3 className="t-h4 text-ink-2 mb-3 transition-transform duration-500 ease-out group-hover:-translate-y-1">{item.title}</h3>
+              <p className="t-body-s text-ink-3 measure-body transition-transform duration-500 ease-out group-hover:-translate-y-1">
                 {item.desc}
               </p>
             </div>

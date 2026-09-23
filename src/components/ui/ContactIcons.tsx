@@ -58,33 +58,6 @@ export default function ContactIcons({ className = "" }: { className?: string })
         <EnvelopeIcon className={GLYPH} />
       </a>
 
-      {SOCIAL_LINKS.map(({ name, href }) => {
-        const Icon = BRAND_ICONS[name];
-        if (!Icon) return null;
-
-        return href ? (
-          <a
-            key={name}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Hivecrest on ${name}`}
-            title={name}
-            className={CIRCLE}
-          >
-            <Icon className={GLYPH} />
-          </a>
-        ) : (
-          <span
-            key={name}
-            aria-label={`${name} (coming soon)`}
-            title={`${name} (coming soon)`}
-            className={`${CIRCLE} cursor-default`}
-          >
-            <Icon className={GLYPH} />
-          </span>
-        );
-      })}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
-import GatewayFlow from "@/components/ui/gateway-flow";
+import Image from "next/image";
 import { START_PROJECT_HREF } from "@/lib/site";
 import { deepLinkHash } from "@/lib/navigation";
 import {
@@ -18,6 +18,7 @@ import {
 } from "@/lib/motion";
 
 export default function PremiumHero() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
 
   // The page opens at the top so the hero wordmark — a once-per-session event —
@@ -108,7 +109,7 @@ export default function PremiumHero() {
       // Parallax Scrolling Effect (triggers as you scroll down)
       const scrollTl = gsap.timeline({
         scrollTrigger: {
-          trigger: heroRef.current,
+          trigger: wrapperRef.current,
           start: "top top",
           end: "bottom top", // From top of screen until it leaves the screen
           scrub: true,
@@ -116,9 +117,9 @@ export default function PremiumHero() {
       });
 
       scrollTl
-        .to(".hero-bg-mesh", { yPercent: 50, ease: "none" }, 0)
-        .to(".hero-brand-wrap", { yPercent: 25, ease: "none" }, 0)
-        .to(".hero-content-wrapper", { yPercent: 10, opacity: 0, ease: "none" }, 0);
+        .to(".hero-bg-mesh", { yPercent: 20, opacity: 0, ease: "none" }, 0)
+        .to(".hero-brand-wrap", { scale: 0.9, yPercent: -5, opacity: 0, ease: "none" }, 0)
+        .to(".hero-content-wrapper", { yPercent: -15, opacity: 0, ease: "none" }, 0);
 
     }, heroRef);
     return () => ctx.revert();
@@ -130,10 +131,16 @@ export default function PremiumHero() {
       {/* Archetype A — MONUMENT (§13.2). The one section in the site that is
           allowed to centre, spending 1 of the 2 centering tokens (04.3).
           Ground `ivory-2`: the page warms from here down and never cools. */}
-      <div ref={heroRef} className="relative w-full min-h-[90vh] overflow-hidden flex flex-col bg-ivory-2">
+      <div ref={wrapperRef} className="relative w-full h-[100vh] z-0">
+        <div ref={heroRef} className="sticky top-0 w-full h-[100vh] overflow-hidden flex flex-col justify-center bg-ivory-2">
         {/* Animated Background Mesh/Glow */}
         <div className="hero-bg-mesh absolute inset-0 overflow-hidden pointer-events-none z-0">
-          <GatewayFlow mode="light" density={1.5} size={1.5} speed={0.8} className="absolute inset-0 w-full h-full object-cover" />
+          <Image
+            src="/assets/hivecrestloogo.png"
+            alt="Hivecrest Background Logo"
+            fill
+            className="object-contain contrast-125 brightness-110 opacity-30"
+          />
           <div className="absolute top-[-50%] left-[-20%] w-[140%] h-[140%] opacity-40 animate-slow-pan bg-[radial-gradient(circle_at_center,rgba(212,163,42,0.15)_0%,transparent_60%)]" />
           <div className="absolute bottom-[-50%] right-[-20%] w-[140%] h-[140%] opacity-30 animate-slow-pan-reverse bg-[radial-gradient(circle_at_center,rgba(212,163,42,0.12)_0%,transparent_60%)]" />
         </div>
@@ -180,7 +187,7 @@ export default function PremiumHero() {
                 consumer until now. */}
             <span aria-hidden className="hero-rule h-px w-6 bg-ink-6" />
             <span className="t-meta text-ink-4">
-              Next-Gen Software Services
+              Custom Software Solutions
             </span>
           </div>
 
@@ -220,14 +227,13 @@ export default function PremiumHero() {
               screen, which is the first thing on the honey list. It is flat
               colour, not the gradient underline Rule 02.13 forbids. */}
           <h2 className="hero-rise t-h3 text-ink-2 text-center max-w-4xl">
-            The digital <span className="text-honey-5">backbone</span> your
-            business grows on.
+            Practical software that helps your <span className="text-honey-5">business</span> run better.
           </h2>
 
           {/* Rule 03.5 — h3 to body-l is three ramp steps, so the two sizes
               read as different roles rather than as a slightly smaller heading. */}
           <p className="hero-rise t-body-l text-ink-3 measure-lead text-center mt-6">
-            AI-powered CRM and Video Analytics platforms built around the way your team actually works.
+            Smart CRM and Video Analytics platforms built around the way your team actually works.
           </p>
 
           {/* CTAs */}
@@ -255,6 +261,7 @@ export default function PremiumHero() {
           <p className="hero-rise mt-8 t-caption text-ink-4 text-center">
             Recognised by StartupTN · DPIIT Certified Startup · Incubated at iTNT
           </p>
+        </div>
         </div>
       </div>
     </>

@@ -25,8 +25,8 @@ import { SERVICES, servicePath } from "@/lib/services";
 const aboutLinks = [
   { text: "About Us", href: ROUTES.about },
   { text: "Founder's Desk", href: ROUTES.founder },
-  { text: "Achievements", href: "/#achievements" },
-  { text: "GJ Global Portfolio", href: "/#portfolio" },
+  { text: "Notable", href: "/#achievements" },
+  { text: "Our Partners", href: "/#portfolio" },
 ];
 
 const helpfulLinks = [
@@ -73,37 +73,10 @@ export default function FooterColumn() {
             </p>
 
             <p className="text-ink-4 mt-4 text-sm leading-relaxed max-w-xs">
-              AI-powered CRM and Video Analytics platforms.
+              Smart CRM and video analytics tools.
               Built around the way your team actually works.
             </p>
 
-            {/* Social links */}
-            <ul className="mt-6 flex gap-5">
-              {SOCIAL_LINKS.map(({ name, href }) =>
-                href ? (
-                  <li key={name}>
-                    <Link
-                      href={href}
-                      className="text-ink-4 hover:text-honey-5 transition-colors duration-200 t-caption"
-                      aria-label={name}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span className="t-caption font-semibold">{name}</span>
-                    </Link>
-                  </li>
-                ) : (
-                  <li key={name}>
-                    <span
-                      className="text-ink-6 t-caption cursor-not-allowed"
-                      aria-label={`${name} — coming soon`}
-                    >
-                      {name}
-                    </span>
-                  </li>
-                )
-              )}
-            </ul>
           </div>
 
           {/* ── Four link columns ── */}

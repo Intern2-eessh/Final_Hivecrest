@@ -43,18 +43,18 @@ export default function FoundersDesk() {
           />
         </div>
 
-        {/* Ambient background orbs for Liquid Glass refraction - Slightly softened */}
-        <div className="absolute top-0 right-0 w-[45rem] h-[45rem] bg-honey-4/50 rounded-full mix-blend-multiply filter blur-[100px] pointer-events-none translate-x-1/4 -translate-y-1/4" />
-        <div className="absolute bottom-0 left-0 w-[35rem] h-[35rem] bg-slate-4/40 rounded-full mix-blend-multiply filter blur-[90px] pointer-events-none -translate-x-1/4 translate-y-1/4" />
-        <div className="absolute top-1/2 left-1/2 w-[30rem] h-[30rem] bg-ink-4/20 rounded-full mix-blend-multiply filter blur-[110px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+        {/* Ambient background orbs for Liquid Glass refraction - Softened contrast */}
+        <div className="absolute top-0 right-0 w-[45rem] h-[45rem] bg-honey-4/30 rounded-full mix-blend-multiply filter blur-[100px] pointer-events-none translate-x-1/4 -translate-y-1/4" />
+        <div className="absolute bottom-0 left-0 w-[35rem] h-[35rem] bg-slate-4/20 rounded-full mix-blend-multiply filter blur-[90px] pointer-events-none -translate-x-1/4 translate-y-1/4" />
+        <div className="absolute top-1/2 left-1/2 w-[30rem] h-[30rem] bg-ink-4/10 rounded-full mix-blend-multiply filter blur-[110px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
 
         {/* ── ONE CARD: portrait and message share a single frame ──────── */}
         <div
           ref={cardRef}
-          className="seat-full bg-white/30 backdrop-blur-3xl rounded-[3.5rem] p-8 md:p-12 lg:p-16 relative shadow-[0_25px_55px_rgba(0,0,0,0.08),inset_0_0_45px_rgba(255,255,255,0.6)] border border-white/70"
+          className="seat-full bg-white/40 backdrop-blur-3xl rounded-[3.5rem] p-8 md:p-12 lg:p-16 relative shadow-[0_20px_50px_rgba(0,0,0,0.04),inset_0_0_45px_rgba(255,255,255,0.4)] border border-white/40"
         >
           {/* Glossy liquid top highlight - Dialed back by 20% */}
-          <div className="absolute inset-0 rounded-[3.5rem] border-t-[3px] border-l-[1px] border-white/90 pointer-events-none" />
+          <div className="absolute inset-0 rounded-[3.5rem] border-t-[2px] border-l-[1px] border-white/50 pointer-events-none" />
 
           {/* The honey corner wash is gone — Rule 02.13 forbids gradients and
               glow washes outright, and it spent honey on decoration. */}
@@ -65,9 +65,9 @@ export default function FoundersDesk() {
                 to stay a circle. The gradient ring around it was not. */}
             <div className="w-full lg:w-[36%] shrink-0 flex flex-col items-center gap-7">
               {/* Liquid Glass image frame - Dialed back */}
-              <div className="rounded-full p-4 bg-white/30 backdrop-blur-2xl shadow-[0_15px_35px_rgba(0,0,0,0.08),inset_0_0_25px_rgba(255,255,255,0.6)] border border-white/60 relative z-10">
-                <div className="absolute inset-0 rounded-full border-t-[2px] border-l-[1px] border-white/90 pointer-events-none" />
-                <div className="rounded-full p-2 bg-white/40 shadow-[inset_0_8px_15px_rgba(255,255,255,0.7)] border border-white/50">
+              <div className="rounded-full p-4 bg-white/40 backdrop-blur-2xl shadow-[0_15px_35px_rgba(0,0,0,0.04),inset_0_0_25px_rgba(255,255,255,0.4)] border border-white/40 relative z-10">
+                <div className="absolute inset-0 rounded-full border-t-[1.5px] border-l-[1px] border-white/60 pointer-events-none" />
+                <div className="rounded-full p-2 bg-white/50 shadow-[inset_0_8px_15px_rgba(255,255,255,0.4)] border border-white/30">
                   {/* Sized from the viewport rather than fixed at 256/320px, so
                       the portrait shrinks smoothly on small screens instead of
                       forcing its container wider than the phone. */}

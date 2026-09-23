@@ -271,7 +271,7 @@ export default function ContactSection({
 
           {/* ── Left: the pitch ── */}
           <div className="pt-8">
-            <h2 className="t-h2 text-ink-2 font-display font-bold mb-6">
+            <h2 className="t-h2 text-honey-3 font-display font-bold mb-6">
               Ready to upgrade your operations?
             </h2>
 

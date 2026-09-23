@@ -81,7 +81,7 @@ export default function AboutUs() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative w-full bg-ivory-2 rhythm-1 text-ink-2"
+      className="relative z-10 w-full bg-ivory-2 rhythm-1 text-ink-2 shadow-[0_-8px_30px_rgba(0,0,0,0.04)]"
     >
       <div className="grid-page items-stretch gap-y-10">
 
@@ -95,7 +95,7 @@ export default function AboutUs() {
             <span aria-hidden className="h-px w-6 bg-ink-6" />
             <span className="t-meta text-ink-4">Who We Are</span>
           </div>
-          <h2 className="t-h2 text-ink-2 mb-8">
+          <h2 className="t-h2 text-honey-3 mb-8">
             About Us
           </h2>
           {/* Rule 02.4 — text colour is a token, never an opacity. */}

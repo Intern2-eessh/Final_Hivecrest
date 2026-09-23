@@ -174,7 +174,7 @@ export default function SolutionsSection() {
                   <span className="index-numeral t-h4 shrink-0 px-4 py-2 rounded-xl bg-ivory-3 shadow-[inset_4px_4px_8px_#cfcbbb,inset_-4px_-4px_8px_#ffffff] text-honey-5 font-bold">
                     {project.id}
                   </span>
-                  <h3 className="t-h3 text-ink-2" style={{ textShadow: "1.5px 1.5px 2px #ffffff, -1.5px -1.5px 2px rgba(0,0,0,0.15)" }}>
+                  <h3 className="t-h3 text-honey-3" style={{ textShadow: "1.5px 1.5px 2px #ffffff, -1.5px -1.5px 2px rgba(0,0,0,0.15)" }}>
                     {project.title}
                   </h3>
                 </div>

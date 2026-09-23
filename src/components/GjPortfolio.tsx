@@ -78,7 +78,7 @@ export default function GjPortfolio() {
                 <span className="text-honey-5 font-bold tracking-widest">{item.id}</span>
                 <span className="h-px flex-1 bg-ink-7"></span>
               </div>
-              <h3 className="t-h3 text-ink-2">{item.name}</h3>
+              <h3 className="t-h3 text-honey-3">{item.name}</h3>
               <p className="t-body font-medium text-ink-3">{item.position}</p>
               <div className="flex flex-wrap gap-2">
                 {item.chips.map((chip) => (
@@ -161,7 +161,7 @@ export default function GjPortfolio() {
                     {item.system}
                   </span>
 
-                  <h3 className="text-xl lg:text-3xl font-display font-bold text-ink-2 text-balance leading-tight max-w-xl">
+                  <h3 className="text-xl lg:text-3xl font-display font-bold text-honey-3 text-balance leading-tight max-w-xl">
                     {item.position}
                   </h3>
 

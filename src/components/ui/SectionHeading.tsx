@@ -57,7 +57,7 @@ export default function SectionHeading({
         <span className="t-meta text-ink-4">{eyebrow}</span>
       </div>
 
-      <Heading className="t-h2 text-ink-2 mb-4">{title}</Heading>
+      <Heading className="t-h2 text-honey-3 mb-4">{title}</Heading>
 
       {subtitle && (
         <p className={cn("t-lead text-ink-3 measure-lead", centered && "mx-auto")}>

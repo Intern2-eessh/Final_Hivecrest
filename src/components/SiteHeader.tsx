@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Info, Target, Award, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 import EmployeeLogin from "@/components/EmployeeLogin";
 import { NAV_ITEMS, MAILTO, START_PROJECT_HREF } from "@/lib/site";
@@ -226,21 +226,23 @@ export default function SiteHeader() {
                     {item.label}
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 group-hover:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
                   </span>
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 pt-0 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                    <div className="bg-paper border border-ink-7 rounded-xl shadow-xl overflow-hidden flex flex-col p-2">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-56 opacity-0 invisible translate-y-3 group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out">
+                    <div className="bg-honey-1 border border-honey-2 rounded-xl shadow-[0_10px_35px_rgba(212,163,42,0.15)] overflow-hidden flex flex-col p-2">
                       {item.children.map((child) => {
                         const isChildActive = activeId === child.id;
+                        const Icon = child.id === "about" ? Info : child.id === "vision" ? Target : child.id === "achievements" ? Award : Briefcase;
                         return (
                           <a
                             key={child.label}
                             href={child.href}
                             className={cn(
-                              "px-4 py-2.5 text-sm font-medium rounded-lg transition-colors",
+                              "px-4 py-2.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-3",
                               isChildActive
-                                ? "text-honey-5 bg-honey-1"
-                                : "text-ink-3 hover:text-honey-5 hover:bg-ivory-2"
+                                ? "text-honey-6 bg-honey-2/50"
+                                : "text-ink-3 hover:text-honey-6 hover:bg-honey-2/50"
                             )}
                           >
+                            <Icon className="w-4 h-4" />
                             {child.label}
                           </a>
                         );
@@ -350,19 +352,23 @@ export default function SiteHeader() {
               return (
                 <div key={item.label} className="flex flex-col space-y-4">
                   <span className="t-h4 text-ink-4 uppercase tracking-widest">{item.label}</span>
-                  {item.children.map((child) => (
-                    <a
-                      key={child.label}
-                      href={child.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        "tap t-h4 state justify-center",
-                        activeId === child.id ? "text-honey-5" : "text-ink-3 hover:text-honey-5"
-                      )}
-                    >
-                      {child.label}
-                    </a>
-                  ))}
+                  {item.children.map((child) => {
+                    const Icon = child.id === "about" ? Info : child.id === "vision" ? Target : child.id === "achievements" ? Award : Briefcase;
+                    return (
+                      <a
+                        key={child.label}
+                        href={child.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={cn(
+                          "tap t-h4 state justify-center flex items-center gap-3",
+                          activeId === child.id ? "text-honey-5" : "text-ink-3 hover:text-honey-5"
+                        )}
+                      >
+                        <Icon className="w-6 h-6 shrink-0" />
+                        {child.label}
+                      </a>
+                    );
+                  })}
                 </div>
               );
             }

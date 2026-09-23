@@ -188,7 +188,7 @@ export default function VisionMission() {
             title="Vision"
             text="To become a trusted technology partner delivering intelligent and efficient solutions that create lasting value for organizations."
             imagePath="/assets/vision_professional.jpg"
-            tag="Our North Star"
+            tag="Direction"
             icon={<VisionIcon />}
           />
           <Card
@@ -196,7 +196,7 @@ export default function VisionMission() {
             title="Mission"
             text="To engineer practical Intelligent Systems, automation, and enterprise solutions that reduce operational effort, improve efficiency, and enable organizations to perform better."
             imagePath="/assets/mission_professional.jpg"
-            tag="Our Commitment"
+            tag="Purpose"
             icon={<MissionIcon />}
           />
         </div>
